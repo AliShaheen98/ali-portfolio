@@ -202,8 +202,7 @@ nav.stuck {
   text-transform: uppercase;
   margin-bottom: 2.2rem;
   font-family: 'Outfit', sans-serif;
-  opacity: 0;
-  animation: slideIn .8s .1s var(--ease) forwards;
+  animation: slideIn .8s .1s var(--ease) forwards; opacity:1;
 }
 .badge-dot {
   width: 6px; height: 6px;
@@ -247,7 +246,6 @@ nav.stuck {
   line-height: 1.85;
   margin-bottom: 2.8rem;
   font-family: 'Outfit', sans-serif;
-  opacity: 0;
   animation: slideIn .8s .7s var(--ease) forwards;
 }
 .hero-sub strong { color: var(--text); font-weight: 500; }
@@ -257,7 +255,6 @@ nav.stuck {
 .hero-actions {
   display: flex; gap: .85rem; flex-wrap: wrap;
   margin-bottom: 4rem;
-  opacity: 0;
   animation: slideIn .8s .85s var(--ease) forwards;
 }
 .btn-fill {
@@ -303,7 +300,6 @@ nav.stuck {
   border-top: 1px solid var(--border);
   padding-top: 2.5rem;
   flex-wrap: wrap;
-  opacity: 0;
   animation: slideIn .8s 1.05s var(--ease) forwards;
 }
 .hstat {
@@ -771,6 +767,13 @@ footer {
    NUMBER COUNTER ANIMATION
 ═══════════════════════════════════ */
 .count-num { display: inline-block; }
+
+/* FORCE ALL VISIBLE */
+.reveal,.reveal.d1,.reveal.d2,.reveal.d3,.reveal.d4 {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: none !important;
+}
 </style>
 </head>
 <body>
@@ -791,7 +794,7 @@ footer {
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
-    <button class="theme-btn" id="themeBtn">&#127769;</button>
+    <button class="theme-btn" id="themeBtn">🌙</button>
     <a href="mailto:ali.moshaheen@gmail.com" id="nav-email" class="nav-hire">Hire Me</a>
   </div>
 </nav>
@@ -806,7 +809,7 @@ footer {
     </h1>
     <p class="hero-sub" id="hero-tagline"></p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-fill"><span>Get in Touch</span></a>
+      <a href="#contact" class="btn-fill"><span>&#x2709; Get in Touch</span></a>
       <a href="#" id="hero-linkedin" target="_blank" class="btn-outline">LinkedIn &#x2197;</a>
       <a href="#" id="hero-github" target="_blank" class="btn-outline">GitHub &#x2197;</a>
     </div>
@@ -817,66 +820,68 @@ footer {
 <div class="stripe" id="about">
   <div class="section">
     <div class="about-grid">
-      <div>
+      <div class="reveal">
         <div class="sec-eyebrow">About Me</div>
         <h2 class="sec-h2">Building mobile<br>experiences that matter.</h2>
         <div class="about-copy" id="about-copy"></div>
         <div class="tag-cloud" id="about-tags"></div>
       </div>
-      <div><div class="info-card" id="info-card"></div></div>
+      <div class="reveal d2">
+        <div class="info-card" id="info-card"></div>
+      </div>
     </div>
   </div>
 </div>
 
 <div id="skills">
   <div class="section">
-    <div class="sec-eyebrow">Technical Skills</div>
-    <h2 class="sec-h2">Everything I build with.</h2>
-    <p class="sec-body">Full-stack mobile expertise across native iOS and cross-platform Flutter.</p>
-    <div class="skills-mosaic" id="skills-grid"></div>
+    <div class="sec-eyebrow reveal">Technical Skills</div>
+    <h2 class="sec-h2 reveal d1">Everything I build with.</h2>
+    <p class="sec-body reveal d2">Full-stack mobile expertise across native iOS and cross-platform Flutter.</p>
+    <div class="skills-mosaic reveal d2" id="skills-grid"></div>
   </div>
 </div>
 
 <div class="stripe" id="experience">
   <div class="section">
-    <div class="sec-eyebrow">Work History</div>
-    <h2 class="sec-h2">6+ years of shipping.</h2>
-    <p class="sec-body">Led and built mobile products across Saudi Arabia's top studios.</p>
+    <div class="sec-eyebrow reveal">Work History</div>
+    <h2 class="sec-h2 reveal d1">6+ years of shipping.</h2>
+    <p class="sec-body reveal d2">Led and built mobile products across Saudi Arabia's top studios.</p>
     <div class="exp-track" id="exp-track"></div>
   </div>
 </div>
 
 <div id="apps">
   <div class="section">
-    <div class="sec-eyebrow">Portfolio</div>
-    <h2 class="sec-h2">Apps I've shipped.</h2>
-    <p class="sec-body">Production apps live on App Store and Google Play.</p>
-    <div class="apps-grid" id="apps-grid"></div>
+    <div class="sec-eyebrow reveal">Portfolio</div>
+    <h2 class="sec-h2 reveal d1">Apps I've shipped.</h2>
+    <p class="sec-body reveal d2">Production apps live on App Store and Google Play.</p>
+    <div class="apps-grid reveal d2" id="apps-grid"></div>
   </div>
 </div>
 
 <div class="stripe">
   <div class="section">
-    <div class="sec-eyebrow">Certifications</div>
-    <h2 class="sec-h2">Always learning.</h2>
-    <div class="certs-grid" id="certs-grid"></div>
+    <div class="sec-eyebrow reveal">Certifications</div>
+    <h2 class="sec-h2 reveal d1">Always learning.</h2>
+    <div class="certs-grid reveal d2" id="certs-grid"></div>
   </div>
 </div>
 
 <div id="contact">
   <div class="section">
     <div class="contact-grid">
-      <div>
+      <div class="reveal">
         <div class="sec-eyebrow">Contact</div>
         <div class="contact-headline">Let's<br><em>work</em><br>together.</div>
-        <p class="contact-p">Open to full-time roles, freelance, and consulting. Available remotely.</p>
+        <p class="contact-p">Open to full-time roles, freelance projects, and consulting. I work remotely across all time zones.</p>
         <div class="contact-items" id="contact-items"></div>
       </div>
-      <div>
+      <div class="reveal d2">
         <div class="cta-panel">
           <div class="cta-eyebrow">// Available Now</div>
           <div class="cta-h">Looking for a Senior Mobile Developer?</div>
-          <p class="cta-p">Whether you need an iOS expert, a Flutter architect, or a mobile team lead — I bring 6+ years of production experience.</p>
+          <p class="cta-p">Whether you need an iOS expert, a Flutter architect, or someone to lead your mobile team — I bring 6+ years of production experience and a track record of shipping quality apps on time.</p>
           <div class="avail-row">Currently open to new opportunities</div>
           <div class="cta-actions">
             <a href="mailto:ali.moshaheen@gmail.com" id="cta-email" class="cta-main">Send Email &rarr;</a>
@@ -889,111 +894,100 @@ footer {
 </div>
 
 <footer>
-  <div class="fl">&#169; 2025 Ali Shaheen &#8212; Senior iOS &amp; Flutter Developer</div>
+  <div class="fl" id="footer-left">&#169; 2025 Ali Shaheen &#8212; Senior iOS &amp; Flutter Developer</div>
   <div class="fr">Gaza, Palestine &middot; Available Worldwide</div>
 </footer>
 
 <script>
-var D={"profile": {"name": "Ali Shaheen", "title": "Senior iOS & Flutter Developer", "subtitle": "Mobile Team Lead", "tagline": "Mobile Team Lead with 6+ years shipping production apps for 15+ international clients across Saudi Arabia, the Gulf, Egypt, the US, and Europe. Based in Gaza, Palestine.", "location": "Gaza, Palestine", "email": "ali.moshaheen@gmail.com", "phone": "+970 598 552 664", "linkedin": "https://linkedin.com/in/alishaheen98", "github": "https://github.com/AliShaheen98", "status": "Available Now", "available": true, "stats": [{"number": "6+", "label": "Years Experience"}, {"number": "20+", "label": "Apps Shipped"}, {"number": "15+", "label": "Int'l Clients"}, {"number": "5", "label": "Teams Led"}], "about": ["I'm a <strong>Senior Mobile Developer and Team Lead</strong> specializing in iOS (Swift, SwiftUI) and Flutter. I architect, build, and ship production apps for telecom, government, real estate, and services sectors.", "My career has taken me through <strong>Saudi Arabia's leading mobile studios</strong> — INOVAR and JIFF Technology — leading teams of 4–5 developers and delivering apps used by thousands.", "I care deeply about <strong>clean architecture, performance, and code quality</strong> — and I mentor teams to build the same way."], "tags": ["Swift", "SwiftUI", "Flutter", "Dart", "Objective-C", "Clean Architecture", "MVVM", "Bloc", "GetX", "Firebase", "CI/CD", "TDD"]}, "skills": [{"icon": "🍎", "name": "iOS Native", "items": "Swift · SwiftUI · UIKit\nObjective-C · Core Animation\nCore Location · ARKit · CoreML"}, {"icon": "💙", "name": "Flutter & Dart", "items": "Flutter 3 · Dart\nCross-platform iOS & Android\nBloc · Cubit · GetX · Riverpod"}, {"icon": "🏗️", "name": "Architecture", "items": "Clean Architecture · MVVM\nMVC · MVP · VIPER\nSOLID Principles"}, {"icon": "🔥", "name": "Backend & APIs", "items": "REST APIs · GraphQL\nFirebase (Firestore, FCM, Auth)\nGCP · AWS (EC2, S3)"}, {"icon": "⚙️", "name": "DevOps & CI/CD", "items": "Fastlane · Jenkins\nGitLab CI · Travis CI\nDocker · Azure DevOps"}, {"icon": "💳", "name": "Integrations", "items": "Stripe · Apple Pay · IAP\nGoogle Maps · Apple Maps\nOAuth · SSO · Push Notifications"}, {"icon": "🧪", "name": "Testing", "items": "Unit Testing\nWidget Testing\nIntegration Testing · TDD"}, {"icon": "📋", "name": "Leadership", "items": "Scrum · Kanban · Agile\nJira · Confluence\nSprint Planning · Reviews"}], "experience": [{"id": "exp1", "role": "Lead Mobile Developer", "badge": "iOS & Flutter", "company": "INOVAR", "location": "Riyadh, Saudi Arabia", "period": "Apr 2022 — Present", "current": true, "points": ["Led a team of 4–5 developers across sprint planning, code reviews, and delivery for 5+ production apps", "Architected scalable solutions using Clean Architecture, MVVM, Bloc, and GetX", "Built Balady 940 (MOMRA) — Government employee services app for Saudi Ministry of Municipality in Swift", "Built Lebara ONS — Telecom digital services platform for the Saudi market in Flutter", "Established CI/CD pipelines with Fastlane + Azure DevOps — shipped concept to production in under 2 months"], "chips": ["Balady 940", "Lebara ONS", "Jaree App"]}, {"id": "exp2", "role": "Mobile Team Lead", "badge": "iOS & Flutter", "company": "JIFF Technology", "location": "Riyadh, Saudi Arabia", "period": "Jun 2021 — Oct 2023", "current": false, "points": ["Promoted twice: Mid-Senior → Senior Developer → Mobile Team Lead", "Shipped 15+ production apps to App Store and Google Play as developer and team lead", "Developed Flutter cross-platform apps and native iOS apps with Swift, UIKit, and Core Animation", "Conducted technical interviews and mentored junior and senior developers"], "chips": ["Matn Talib Al-Ilm", "15+ apps shipped"]}, {"id": "exp3", "role": "iOS Developer", "badge": "", "company": "Future Vision Solutions", "location": "Riyadh, Saudi Arabia", "period": "Feb 2020 — Jan 2022", "current": false, "points": ["Started as paid trainee, rapidly progressed to full iOS Developer", "Built Mashi Delivery — On-demand delivery platform with real-time tracking in Swift", "Built Al-Sharif Real Estate — Property listings for residential and commercial sectors"], "chips": ["Mashi Delivery", "Al-Sharif Real Estate"]}, {"id": "exp4", "role": "Freelance iOS & Flutter Developer", "badge": "", "company": "Self-Employed", "location": "Remote — Upwork & Mostaql", "period": "Dec 2018 — Jan 2023", "current": false, "points": ["Delivered 10+ apps to App Store and Google Play for clients in Saudi Arabia, Egypt, US, and Gulf", "Managed the full app lifecycle independently: requirements, architecture, development, testing, deployment"], "chips": ["Exford Rent a Car", "WeeGoApp", "Drive Square", "Louz App", "Maghsool", "Adhmn"]}], "projects": [{"id": "p1", "num": "01", "icon": "🏛️", "category": "Government · iOS Native", "name": "Balady 940 (MOMRA)", "desc": "Employee services app for Saudi Ministry of Municipality. Handles sensitive data for thousands of staff.", "tags": ["Swift", "iOS", "Clean Arch"], "link": ""}, {"id": "p2", "num": "02", "icon": "📡", "category": "Telecom · Flutter", "name": "Lebara ONS", "desc": "Telecom digital services platform for Saudi market with complex carrier API integrations.", "tags": ["Flutter", "GetX", "Telecom APIs"], "link": ""}, {"id": "p3", "num": "03", "icon": "🚗", "category": "Car Rental · SwiftUI", "name": "Exford Rent a Car", "desc": "Full car rental booking platform built entirely with SwiftUI's declarative UI. Live on App Store.", "tags": ["SwiftUI", "iOS", "App Store"], "link": "https://apps.apple.com/app/id6479560795"}, {"id": "p4", "num": "04", "icon": "🛎️", "category": "On-demand · Flutter", "name": "WeeGoApp", "desc": "On-demand services with real-time tracking and Firebase backend. Cross-platform iOS & Android.", "tags": ["Flutter", "Firebase", "Real-time"], "link": "https://apps.apple.com/app/id6754606579"}, {"id": "p5", "num": "05", "icon": "🚙", "category": "Car Rental · Flutter", "name": "Drive Square", "desc": "Cross-platform car rental system with full booking flows and Google Maps integration.", "tags": ["Flutter", "Google Maps", "Booking"], "link": ""}, {"id": "p6", "num": "06", "icon": "🚿", "category": "Services · Swift → Flutter", "name": "Louz App", "desc": "Car wash booking with real-time tracking. Started as iOS Native Swift then migrated to Flutter.", "tags": ["Swift", "Flutter", "Migration"], "link": "https://apps.apple.com/app/id6451120012"}, {"id": "p7", "num": "07", "icon": "👕", "category": "Laundry · iOS + Android", "name": "Maghsool", "desc": "On-demand laundry services built with iOS Native Swift plus separate Google Play Android version.", "tags": ["Swift", "iOS", "Android"], "link": "https://apps.apple.com/app/id6670730000"}, {"id": "p8", "num": "08", "icon": "🏠", "category": "Home Services · Flutter", "name": "Adhmn", "desc": "Home maintenance platform with Firebase backend, technician dispatch, and service booking.", "tags": ["Flutter", "Firebase", "Dispatch"], "link": ""}, {"id": "p9", "num": "09", "icon": "🏡", "category": "Real Estate · Swift", "name": "Al-Sharif Real Estate", "desc": "Property listings covering residential, commercial, and industrial sectors with REST API.", "tags": ["Swift", "REST API", "Apple Maps"], "link": "https://apps.apple.com/app/id1609398407"}, {"id": "p10", "num": "10", "icon": "🛒", "category": "E-Commerce · Swift", "name": "Al Qannsa", "desc": "E-commerce for Middle East shopping with REST APIs and full payment integration.", "tags": ["Swift", "REST API", "Payments"], "link": "https://apps.apple.com/app/id1513695726"}, {"id": "p11", "num": "11", "icon": "🚚", "category": "Delivery · Flutter", "name": "Mashi Delivery", "desc": "On-demand delivery platform with real-time order tracking and full courier management.", "tags": ["Flutter", "Real-time", "Tracking"], "link": ""}, {"id": "p12", "num": "12", "icon": "📚", "category": "Education · iOS", "name": "Matn Talib Al-Ilm", "desc": "Educational iOS app with content delivery and user management. Available on App Store.", "tags": ["Swift", "iOS", "Content"], "link": "https://apps.apple.com/app/id1439459539"}], "certifications": [{"icon": "🍎", "title": "Complete iOS App Development Bootcamp — Swift & Objective-C"}, {"icon": "💙", "title": "The Complete Flutter & Dart Development Course"}, {"icon": "🏗️", "title": "Flutter Clean Architecture — Flutter 3"}, {"icon": "📋", "title": "Project Management Crash Course"}, {"icon": "⚙️", "title": "Nintex K2 Five for SharePoint Practitioner"}, {"icon": "🔌", "title": "Nintex Automation: Business Analyst & IT Developer"}]};
+var _D = {"profile": {"name": "Ali Shaheen", "title": "Senior iOS & Flutter Developer", "subtitle": "Mobile Team Lead", "tagline": "Mobile Team Lead with 6+ years shipping production apps for 15+ international clients across Saudi Arabia, the Gulf, Egypt, the US, and Europe. Based in Gaza, Palestine.", "location": "Gaza, Palestine", "email": "ali.moshaheen@gmail.com", "phone": "+970 598 552 664", "linkedin": "https://linkedin.com/in/alishaheen98", "github": "https://github.com/AliShaheen98", "status": "Available Now", "available": true, "stats": [{"number": "6+", "label": "Years Experience"}, {"number": "20+", "label": "Apps Shipped"}, {"number": "15+", "label": "Int'l Clients"}, {"number": "5", "label": "Teams Led"}], "about": ["I'm a <strong>Senior Mobile Developer and Team Lead</strong> specializing in iOS (Swift, SwiftUI) and Flutter. I architect, build, and ship production apps for telecom, government, real estate, and services sectors.", "My career has taken me through <strong>Saudi Arabia's leading mobile studios</strong> — INOVAR and JIFF Technology — leading teams of 4–5 developers and delivering apps used by thousands.", "I care deeply about <strong>clean architecture, performance, and code quality</strong> — and I mentor teams to build the same way."], "tags": ["Swift", "SwiftUI", "Flutter", "Dart", "Objective-C", "Clean Architecture", "MVVM", "Bloc", "GetX", "Firebase", "CI/CD", "TDD"]}, "skills": [{"icon": "🍎", "name": "iOS Native", "items": "Swift · SwiftUI · UIKit\nObjective-C · Core Animation\nCore Location · ARKit · CoreML"}, {"icon": "💙", "name": "Flutter & Dart", "items": "Flutter 3 · Dart\nCross-platform iOS & Android\nBloc · Cubit · GetX · Riverpod"}, {"icon": "🏗️", "name": "Architecture", "items": "Clean Architecture · MVVM\nMVC · MVP · VIPER\nSOLID Principles"}, {"icon": "🔥", "name": "Backend & APIs", "items": "REST APIs · GraphQL\nFirebase (Firestore, FCM, Auth)\nGCP · AWS (EC2, S3)"}, {"icon": "⚙️", "name": "DevOps & CI/CD", "items": "Fastlane · Jenkins\nGitLab CI · Travis CI\nDocker · Azure DevOps"}, {"icon": "💳", "name": "Integrations", "items": "Stripe · Apple Pay · IAP\nGoogle Maps · Apple Maps\nOAuth · SSO · Push Notifications"}, {"icon": "🧪", "name": "Testing", "items": "Unit Testing\nWidget Testing\nIntegration Testing · TDD"}, {"icon": "📋", "name": "Leadership", "items": "Scrum · Kanban · Agile\nJira · Confluence\nSprint Planning · Reviews"}], "experience": [{"id": "exp1", "role": "Lead Mobile Developer", "badge": "iOS & Flutter", "company": "INOVAR", "location": "Riyadh, Saudi Arabia", "period": "Apr 2022 — Present", "current": true, "points": ["Led a team of 4–5 developers across sprint planning, code reviews, and delivery for 5+ production apps", "Architected scalable solutions using Clean Architecture, MVVM, Bloc, and GetX", "Built Balady 940 (MOMRA) — Government employee services app for Saudi Ministry of Municipality in Swift", "Built Lebara ONS — Telecom digital services platform for the Saudi market in Flutter", "Established CI/CD pipelines with Fastlane + Azure DevOps — shipped concept to production in under 2 months"], "chips": ["Balady 940", "Lebara ONS", "Jaree App"]}, {"id": "exp2", "role": "Mobile Team Lead", "badge": "iOS & Flutter", "company": "JIFF Technology", "location": "Riyadh, Saudi Arabia", "period": "Jun 2021 — Oct 2023", "current": false, "points": ["Promoted twice: Mid-Senior → Senior Developer → Mobile Team Lead", "Shipped 15+ production apps to App Store and Google Play as developer and team lead", "Developed Flutter cross-platform apps and native iOS apps with Swift, UIKit, and Core Animation", "Conducted technical interviews and mentored junior and senior developers"], "chips": ["Matn Talib Al-Ilm", "15+ apps shipped"]}, {"id": "exp3", "role": "iOS Developer", "badge": "", "company": "Future Vision Solutions", "location": "Riyadh, Saudi Arabia", "period": "Feb 2020 — Jan 2022", "current": false, "points": ["Started as paid trainee, rapidly progressed to full iOS Developer", "Built Mashi Delivery — On-demand delivery platform with real-time tracking in Swift", "Built Al-Sharif Real Estate — Property listings for residential and commercial sectors"], "chips": ["Mashi Delivery", "Al-Sharif Real Estate"]}, {"id": "exp4", "role": "Freelance iOS & Flutter Developer", "badge": "", "company": "Self-Employed", "location": "Remote — Upwork & Mostaql", "period": "Dec 2018 — Jan 2023", "current": false, "points": ["Delivered 10+ apps to App Store and Google Play for clients in Saudi Arabia, Egypt, US, and Gulf", "Managed the full app lifecycle independently: requirements, architecture, development, testing, deployment"], "chips": ["Exford Rent a Car", "WeeGoApp", "Drive Square", "Louz App", "Maghsool", "Adhmn"]}], "projects": [{"id": "p1", "num": "01", "icon": "🏛️", "category": "Government · iOS Native", "name": "Balady 940 (MOMRA)", "desc": "Employee services app for Saudi Ministry of Municipality. Handles sensitive data for thousands of staff.", "tags": ["Swift", "iOS", "Clean Arch"], "link": ""}, {"id": "p2", "num": "02", "icon": "📡", "category": "Telecom · Flutter", "name": "Lebara ONS", "desc": "Telecom digital services platform for Saudi market with complex carrier API integrations.", "tags": ["Flutter", "GetX", "Telecom APIs"], "link": ""}, {"id": "p3", "num": "03", "icon": "🚗", "category": "Car Rental · SwiftUI", "name": "Exford Rent a Car", "desc": "Full car rental booking platform built entirely with SwiftUI's declarative UI. Live on App Store.", "tags": ["SwiftUI", "iOS", "App Store"], "link": "https://apps.apple.com/app/id6479560795"}, {"id": "p4", "num": "04", "icon": "🛎️", "category": "On-demand · Flutter", "name": "WeeGoApp", "desc": "On-demand services with real-time tracking and Firebase backend. Cross-platform iOS & Android.", "tags": ["Flutter", "Firebase", "Real-time"], "link": "https://apps.apple.com/app/id6754606579"}, {"id": "p5", "num": "05", "icon": "🚙", "category": "Car Rental · Flutter", "name": "Drive Square", "desc": "Cross-platform car rental system with full booking flows and Google Maps integration.", "tags": ["Flutter", "Google Maps", "Booking"], "link": ""}, {"id": "p6", "num": "06", "icon": "🚿", "category": "Services · Swift → Flutter", "name": "Louz App", "desc": "Car wash booking with real-time tracking. Started as iOS Native Swift then migrated to Flutter.", "tags": ["Swift", "Flutter", "Migration"], "link": "https://apps.apple.com/app/id6451120012"}, {"id": "p7", "num": "07", "icon": "👕", "category": "Laundry · iOS + Android", "name": "Maghsool", "desc": "On-demand laundry services built with iOS Native Swift plus separate Google Play Android version.", "tags": ["Swift", "iOS", "Android"], "link": "https://apps.apple.com/app/id6670730000"}, {"id": "p8", "num": "08", "icon": "🏠", "category": "Home Services · Flutter", "name": "Adhmn", "desc": "Home maintenance platform with Firebase backend, technician dispatch, and service booking.", "tags": ["Flutter", "Firebase", "Dispatch"], "link": ""}, {"id": "p9", "num": "09", "icon": "🏡", "category": "Real Estate · Swift", "name": "Al-Sharif Real Estate", "desc": "Property listings covering residential, commercial, and industrial sectors with REST API.", "tags": ["Swift", "REST API", "Apple Maps"], "link": "https://apps.apple.com/app/id1609398407"}, {"id": "p10", "num": "10", "icon": "🛒", "category": "E-Commerce · Swift", "name": "Al Qannsa", "desc": "E-commerce for Middle East shopping with REST APIs and full payment integration.", "tags": ["Swift", "REST API", "Payments"], "link": "https://apps.apple.com/app/id1513695726"}, {"id": "p11", "num": "11", "icon": "🚚", "category": "Delivery · Flutter", "name": "Mashi Delivery", "desc": "On-demand delivery platform with real-time order tracking and full courier management.", "tags": ["Flutter", "Real-time", "Tracking"], "link": ""}, {"id": "p12", "num": "12", "icon": "📚", "category": "Education · iOS", "name": "Matn Talib Al-Ilm", "desc": "Educational iOS app with content delivery and user management. Available on App Store.", "tags": ["Swift", "iOS", "Content"], "link": "https://apps.apple.com/app/id1439459539"}], "certifications": [{"icon": "🍎", "title": "Complete iOS App Development Bootcamp — Swift & Objective-C"}, {"icon": "💙", "title": "The Complete Flutter & Dart Development Course"}, {"icon": "🏗️", "title": "Flutter Clean Architecture — Flutter 3"}, {"icon": "📋", "title": "Project Management Crash Course"}, {"icon": "⚙️", "title": "Nintex K2 Five for SharePoint Practitioner"}, {"icon": "🔌", "title": "Nintex Automation: Business Analyst & IT Developer"}]};
 
-function go(d){
-  var p=d.profile;
-  document.getElementById('nav-email').href='mailto:'+p.email;
-  document.getElementById('hero-linkedin').href=p.linkedin;
-  document.getElementById('hero-github').href=p.github;
-  document.getElementById('hero-tagline').innerHTML=p.tagline;
+// RENDER IMMEDIATELY - synchronous, no async, no fetch
+(function renderNow() {
+  var p = _D.profile;
+  
+  document.getElementById('nav-email').href = 'mailto:' + p.email;
+  document.getElementById('hero-linkedin').href = p.linkedin;
+  document.getElementById('hero-github').href = p.github;
+  document.getElementById('hero-tagline').innerHTML = p.tagline;
 
-  document.getElementById('hero-stats').innerHTML=p.stats.map(function(s){
-    var n=s.number.replace(/[^0-9]/g,''),sf=s.number.replace(/[0-9]/g,'');
-    return '<div class="hstat"><span class="hstat-n">'+n+sf+'</span><div class="hstat-l">'+s.label+'</div></div>';
+  document.getElementById('hero-stats').innerHTML = p.stats.map(function(s) {
+    var n = s.number.replace(/[^0-9]/g,''), sf = s.number.replace(/[0-9]/g,'');
+    return '<div class="hstat"><span class="hstat-n">' + n + sf + '</span><div class="hstat-l">' + s.label + '</div></div>';
   }).join('');
 
-  document.getElementById('about-copy').innerHTML=p.about.map(function(t){return '<p>'+t+'</p>';}).join('');
-  document.getElementById('about-tags').innerHTML=p.tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join('');
+  document.getElementById('about-copy').innerHTML = p.about.map(function(t) { return '<p>' + t + '</p>'; }).join('');
+  document.getElementById('about-tags').innerHTML = p.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
 
-  document.getElementById('info-card').innerHTML=
-    '<div class="info-row"><span class="ik">Location</span><span class="iv">'+p.location+'</span></div>'+
-    '<div class="info-row"><span class="ik">Status</span><span class="iv go">'+p.status+'</span></div>'+
-    '<div class="info-row"><span class="ik">iOS Experience</span><span class="iv">6+ years</span></div>'+
-    '<div class="info-row"><span class="ik">Flutter Experience</span><span class="iv">4+ years</span></div>'+
-    '<div class="info-row"><span class="ik">Languages</span><span class="iv">Arabic &middot; English C1</span></div>'+
-    '<div class="info-row"><span class="ik">Email</span><span class="iv">'+p.email+'</span></div>';
+  document.getElementById('info-card').innerHTML =
+    '<div class="info-row"><span class="ik">Location</span><span class="iv">' + p.location + '</span></div>' +
+    '<div class="info-row"><span class="ik">Status</span><span class="iv go">&#x2736; ' + p.status + '</span></div>' +
+    '<div class="info-row"><span class="ik">iOS</span><span class="iv">6+ years</span></div>' +
+    '<div class="info-row"><span class="ik">Flutter</span><span class="iv">4+ years</span></div>' +
+    '<div class="info-row"><span class="ik">Team Size</span><span class="iv">4-5 developers</span></div>' +
+    '<div class="info-row"><span class="ik">Languages</span><span class="iv">Arabic · English C1</span></div>' +
+    '<div class="info-row"><span class="ik">Email</span><span class="iv">' + p.email + '</span></div>';
 
-  document.getElementById('skills-grid').innerHTML=d.skills.map(function(s){
-    return '<div class="sk"><span class="sk-icon">'+s.icon+'</span><div class="sk-name">'+s.name+'</div><div class="sk-items">'+s.items.split('\n').join('<br>')+'</div></div>';
+  document.getElementById('skills-grid').innerHTML = _D.skills.map(function(s) {
+    return '<div class="sk"><span class="sk-icon">' + s.icon + '</span><div class="sk-name">' + s.name + '</div><div class="sk-items">' + s.items.split('\n').join('<br>') + '</div></div>';
   }).join('');
 
-  document.getElementById('exp-track').innerHTML=d.experience.map(function(e){
-    var b=e.badge?'<span style="font-size:.7rem;background:rgba(79,126,248,.12);border:1px solid rgba(79,126,248,.22);color:var(--accent);padding:.15rem .5rem;border-radius:4px;margin-left:.7rem;vertical-align:middle">'+e.badge+'</span>':'';
-    return '<div class="exp-entry">'+
-      '<div class="exp-node"></div>'+
-      '<div class="exp-card">'+
-      '<div class="exp-top"><div class="exp-role">'+e.role+b+'</div><div class="exp-period">'+e.period+'</div></div>'+
-      '<div class="exp-co"><strong>'+e.company+'</strong> &middot; '+e.location+'</div>'+
-      '<ul class="exp-pts">'+e.points.map(function(pt){return '<li>'+pt+'</li>';}).join('')+'</ul>'+
-      '<div class="exp-chips">'+e.chips.map(function(c){return '<span class="chip">'+c+'</span>';}).join('')+'</div>'+
+  document.getElementById('exp-track').innerHTML = _D.experience.map(function(e) {
+    var b = e.badge ? '<span style="font-size:.7rem;background:rgba(79,126,248,.12);border:1px solid rgba(79,126,248,.22);color:var(--accent);padding:.15rem .5rem;border-radius:4px;margin-left:.7rem;vertical-align:middle">' + e.badge + '</span>' : '';
+    return '<div class="exp-entry">' +
+      '<div class="exp-node"></div>' +
+      '<div class="exp-card">' +
+      '<div class="exp-top"><div class="exp-role">' + e.role + b + '</div><div class="exp-period">' + e.period + '</div></div>' +
+      '<div class="exp-co"><strong>' + e.company + '</strong> &middot; ' + e.location + '</div>' +
+      '<ul class="exp-pts">' + e.points.map(function(pt) { return '<li>' + pt + '</li>'; }).join('') + '</ul>' +
+      '<div class="exp-chips">' + e.chips.map(function(c) { return '<span class="chip">' + c + '</span>'; }).join('') + '</div>' +
       '</div></div>';
   }).join('');
 
-  document.getElementById('apps-grid').innerHTML=d.projects.map(function(pr){
-    var oc=pr.link?' onclick="window.open(\'' +pr.link+ '\',\'_blank\')" style="cursor:pointer"':'';
-    var ar=pr.link?' <span style="font-size:.7rem;color:var(--accent)">&#x2197;</span>':'';
-    return '<div class="app"'+oc+'>'+
-      '<div class="app-num">'+pr.num+'</div>'+
-      '<span class="app-icon">'+pr.icon+'</span>'+
-      '<div class="app-cat">'+pr.category+'</div>'+
-      '<div class="app-name">'+pr.name+ar+'</div>'+
-      '<div class="app-desc">'+pr.desc+'</div>'+
-      '<div class="app-tags">'+pr.tags.map(function(t){return '<span class="app-tag">'+t+'</span>';}).join('')+'</div>'+
+  document.getElementById('apps-grid').innerHTML = _D.projects.map(function(pr) {
+    var oc = pr.link ? ' onclick="window.open(\'' + pr.link + '\',\'_blank\')" style="cursor:pointer"' : '';
+    return '<div class="app"' + oc + '>' +
+      '<div class="app-num">' + pr.num + '</div>' +
+      '<span class="app-icon">' + pr.icon + '</span>' +
+      '<div class="app-cat">' + pr.category + '</div>' +
+      '<div class="app-name">' + pr.name + (pr.link ? ' &#x2197;' : '') + '</div>' +
+      '<div class="app-desc">' + pr.desc + '</div>' +
+      '<div class="app-tags">' + pr.tags.map(function(t) { return '<span class="app-tag">' + t + '</span>'; }).join('') + '</div>' +
       '</div>';
   }).join('');
 
-  document.getElementById('certs-grid').innerHTML=d.certifications.map(function(c){
-    return '<div class="cert"><div class="cert-icon">'+c.icon+'</div><div class="cert-text">'+c.title+'</div></div>';
+  document.getElementById('certs-grid').innerHTML = _D.certifications.map(function(c) {
+    return '<div class="cert"><div class="cert-icon">' + c.icon + '</div><div class="cert-text">' + c.title + '</div></div>';
   }).join('');
 
-  document.getElementById('contact-items').innerHTML=
-    '<a href="mailto:'+p.email+'" class="ci"><div class="ci-ico">&#x2709;</div><div><div class="ci-lbl">Email</div><div class="ci-val">'+p.email+'</div></div></a>'+
-    '<a href="tel:'+p.phone.replace(/ /g,'')+'" class="ci"><div class="ci-ico">&#128222;</div><div><div class="ci-lbl">Phone</div><div class="ci-val">'+p.phone+'</div></div></a>'+
-    '<a href="'+p.linkedin+'" target="_blank" class="ci"><div class="ci-ico">in</div><div><div class="ci-lbl">LinkedIn</div><div class="ci-val">linkedin.com/in/alishaheen98</div></div></a>'+
-    '<a href="'+p.github+'" target="_blank" class="ci"><div class="ci-ico">gh</div><div><div class="ci-lbl">GitHub</div><div class="ci-val">github.com/AliShaheen98</div></div></a>';
+  document.getElementById('contact-items').innerHTML =
+    '<a href="mailto:' + p.email + '" class="ci"><div class="ci-ico">&#x2709;</div><div><div class="ci-lbl">Email</div><div class="ci-val">' + p.email + '</div></div></a>' +
+    '<a href="tel:' + p.phone.replace(/ /g,'') + '" class="ci"><div class="ci-ico">&#128222;</div><div><div class="ci-lbl">Phone</div><div class="ci-val">' + p.phone + '</div></div></a>' +
+    '<a href="' + p.linkedin + '" target="_blank" class="ci"><div class="ci-ico">in</div><div><div class="ci-lbl">LinkedIn</div><div class="ci-val">linkedin.com/in/alishaheen98</div></div></a>' +
+    '<a href="' + p.github + '" target="_blank" class="ci"><div class="ci-ico">gh</div><div><div class="ci-lbl">GitHub</div><div class="ci-val">github.com/AliShaheen98</div></div></a>';
 
-  document.getElementById('cta-email').href='mailto:'+p.email;
-  document.getElementById('cta-linkedin').href=p.linkedin;
-}
+  document.getElementById('cta-email').href = 'mailto:' + p.email;
+  document.getElementById('cta-linkedin').href = p.linkedin;
+})();
 
-// Run immediately - no async, no fetch, no waiting
-go(D);
-
-// Cursor
-var dot=document.getElementById('dot'),ring=document.getElementById('ring');
-var mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';});
-(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
-
-// Nav
-window.addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('stuck',window.scrollY>50);});
+// Nav scroll
+window.addEventListener('scroll', function() {
+  document.getElementById('nav').classList.toggle('stuck', window.scrollY > 50);
+});
 
 // Theme
-document.getElementById('themeBtn').addEventListener('click',function(){
-  var d=document.documentElement;
-  d.setAttribute('data-theme',d.getAttribute('data-theme')==='dark'?'light':'dark');
-  document.getElementById('themeBtn').textContent=d.getAttribute('data-theme')==='dark'?'&#127769;':'&#9728;';
+document.getElementById('themeBtn').addEventListener('click', function() {
+  var html = document.documentElement;
+  var dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('themeBtn').textContent = dark ? '\u{1F319}' : '\u2600';
 });
 
-// Scroll reveal for exp entries
-var obs=new IntersectionObserver(function(entries){
-  entries.forEach(function(e){if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='none';obs.unobserve(e.target);}});
-},{threshold:.05});
-document.querySelectorAll('.exp-entry,.cert,.app').forEach(function(el,i){
-  el.style.opacity='0';el.style.transform='translateY(16px)';
-  el.style.transition='opacity .5s '+i*.04+'s ease,transform .5s '+i*.04+'s ease';
-  obs.observe(el);
-});
-// Also reveal .reveal elements
-document.querySelectorAll('.reveal').forEach(function(el){
-  el.classList.add('in');
-});
+// Cursor
+var dot = document.getElementById('dot'), ring = document.getElementById('ring');
+var mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', function(e) { mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+(function loop(){ rx+=(mx-rx)*.11; ry+=(my-ry)*.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+
 </script>
 </body>
 </html>
