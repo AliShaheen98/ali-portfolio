@@ -922,8 +922,15 @@ document.getElementById('themeBtn').addEventListener('click',()=>{
 // ── Scroll Reveal ──
 const revObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revObs.unobserve(e.target)}});
-},{threshold:.08});
-function initReveal(){document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));}
+},{threshold:.05,rootMargin:'0px 0px -30px 0px'});
+function initReveal(){
+  document.querySelectorAll('.reveal').forEach(el=>{
+    // Check if already visible in viewport
+    const rect=el.getBoundingClientRect();
+    if(rect.top < window.innerHeight){el.classList.add('in');}
+    else{revObs.observe(el);}
+  });
+}
 
 // ── Counter ──
 function animCount(el){
@@ -1041,10 +1048,13 @@ async function init(){
     // No server — use embedded data
     renderAll(PORTFOLIO_DATA);
   }
-  initReveal();
-  staggerApps();
-  const s=document.getElementById('hero-stats');
-  if(s) countObs.observe(s);
+  // Init AFTER render so all .reveal elements exist in DOM
+  setTimeout(()=>{
+    initReveal();
+    staggerApps();
+    const s=document.getElementById('hero-stats');
+    if(s) countObs.observe(s);
+  }, 50);
 }
 
 init();
