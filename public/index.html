@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali Shaheen — Senior iOS & Flutter Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════
+   THEME TOKENS
+═══════════════════════════════════ */
+:root {
+  --ease: cubic-bezier(.25,.46,.45,.94);
+  --ease-bounce: cubic-bezier(.34,1.56,.64,1);
+}
+[data-theme="dark"] {
+  --bg:        #070810;
+  --bg2:       #0c0d18;
+  --bg3:       #111220;
+  --card:      #13152a;
+  --card-h:    #181a2e;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.14);
+  --text:      #e2e4f0;
+  --text2:     #6b6f90;
+  --text3:     #373a55;
+  --accent:    #4f7ef8;
+  --accent2:   #8b5cf6;
+  --green:     #10d9a0;
+  --amber:     #f59e0b;
+  --glow1:     rgba(79,126,248,.09);
+  --glow2:     rgba(139,92,246,.06);
+}
+[data-theme="light"] {
+  --bg:        #f8f9fe;
+  --bg2:       #f1f3fc;
+  --bg3:       #eaecf8;
+  --card:      #ffffff;
+  --card-h:    #f5f7ff;
+  --border:    rgba(0,0,0,0.08);
+  --border2:   rgba(0,0,0,0.15);
+  --text:      #0f1120;
+  --text2:     #5a5e7a;
+  --text3:     #9ea3bc;
+  --accent:    #3b6ef5;
+  --accent2:   #7c3aed;
+  --green:     #059669;
+  --amber:     #d97706;
+  --glow1:     rgba(59,110,245,.06);
+  --glow2:     rgba(124,58,237,.04);
+}
+
+/* ═══════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  transition: background .4s var(--ease), color .4s var(--ease);
+}
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ═══════════════════════════════════
+   ANIMATED BACKGROUND GRID
+═══════════════════════════════════ */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  opacity: .5;
+  animation: gridPulse 8s ease-in-out infinite;
+}
+@keyframes gridPulse { 0%,100%{opacity:.4} 50%{opacity:.7} }
+
+.bg-orb {
+  position: fixed; border-radius: 50%; filter: blur(80px);
+  pointer-events: none; z-index: 0; transition: background .4s;
+}
+.orb1 { width: 600px; height: 600px; top: -150px; right: -150px; background: var(--glow1); animation: orbFloat1 12s ease-in-out infinite; }
+.orb2 { width: 500px; height: 500px; bottom: -100px; left: -100px; background: var(--glow2); animation: orbFloat2 15s ease-in-out infinite; }
+.orb3 { width: 300px; height: 300px; top: 40%; left: 45%; background: var(--glow1); animation: orbFloat1 10s ease-in-out infinite reverse; }
+@keyframes orbFloat1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-40px) scale(1.1)} }
+@keyframes orbFloat2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-20px,30px) scale(1.08)} }
+
+/* ═══════════════════════════════════
+   CUSTOM CURSOR
+═══════════════════════════════════ */
+#dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s, background .2s; }
+#ring { width: 28px; height: 28px; border: 1.5px solid rgba(79,126,248,.5); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); transition: width .2s, height .2s, border-color .2s; }
+body:not(:hover) #dot, body:not(:hover) #ring { opacity: 0; }
+
+/* ═══════════════════════════════════
+   NAV
+═══════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  padding: 1.1rem 5vw;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid transparent;
+  transition: background .4s, border-color .4s, backdrop-filter .4s;
+}
+nav.stuck {
+  background: rgba(7,8,16,.85);
+  backdrop-filter: blur(20px);
+  border-bottom-color: var(--border);
+}
+[data-theme="light"] nav.stuck { background: rgba(248,249,254,.88); }
+
+.nav-logo {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: -.03em;
+  position: relative;
+}
+.nav-logo span {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.nav-center { display: flex; gap: 2.5rem; list-style: none; }
+.nav-center a {
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--text2);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  transition: color .2s;
+  position: relative;
+  font-family: 'Outfit', sans-serif;
+}
+.nav-center a::after {
+  content: '';
+  position: absolute; bottom: -3px; left: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width .25s var(--ease);
+}
+.nav-center a:hover { color: var(--text); }
+.nav-center a:hover::after { width: 100%; }
+.nav-right { display: flex; align-items: center; gap: .8rem; }
+.theme-btn {
+  width: 38px; height: 38px;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  transition: background .2s, border-color .2s, transform .2s;
+  color: var(--text2);
+}
+.theme-btn:hover { background: var(--card); border-color: var(--accent); transform: rotate(20deg); }
+.nav-hire {
+  font-size: .82rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  padding: .52rem 1.2rem;
+  border-radius: 8px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  transition: opacity .2s, transform .2s;
+  font-family: 'Outfit', sans-serif;
+}
+.nav-hire:hover { opacity: .88; transform: translateY(-1px); }
+
+/* ═══════════════════════════════════
+   HERO
+═══════════════════════════════════ */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 8rem 5vw 5rem;
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+}
+.hero-inner { width: 100%; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(16,217,160,.08);
+  border: 1px solid rgba(16,217,160,.2);
+  padding: .42rem 1rem;
+  border-radius: 100px;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  margin-bottom: 2.2rem;
+  font-family: 'Outfit', sans-serif;
+  opacity: 0;
+  animation: slideIn .8s .1s var(--ease) forwards;
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: blink 2s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+.hero-h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4rem, 9.5vw, 9rem);
+  font-weight: 900;
+  line-height: .9;
+  letter-spacing: -.03em;
+  margin-bottom: 1.8rem;
+  overflow: hidden;
+}
+.hero-h1 .line {
+  display: block;
+  opacity: 0;
+  transform: translateY(60px);
+  animation: lineUp .9s var(--ease) forwards;
+}
+.hero-h1 .line:nth-child(1) { animation-delay: .25s; }
+.hero-h1 .line:nth-child(2) { animation-delay: .38s; color: transparent; -webkit-text-stroke: 2px var(--text3); }
+.hero-h1 .line:nth-child(3) {
+  animation-delay: .5s;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+@keyframes lineUp { to { opacity:1; transform:translateY(0); } }
+
+.hero-sub {
+  font-size: 1.18rem;
+  color: var(--text2);
+  font-weight: 300;
+  max-width: 560px;
+  line-height: 1.85;
+  margin-bottom: 2.8rem;
+  font-family: 'Outfit', sans-serif;
+  opacity: 0;
+  animation: slideIn .8s .7s var(--ease) forwards;
+}
+.hero-sub strong { color: var(--text); font-weight: 500; }
+
+@keyframes slideIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+.hero-actions {
+  display: flex; gap: .85rem; flex-wrap: wrap;
+  margin-bottom: 4rem;
+  opacity: 0;
+  animation: slideIn .8s .85s var(--ease) forwards;
+}
+.btn-fill {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  padding: .9rem 2rem;
+  border-radius: 10px;
+  font-size: .95rem;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  letter-spacing: .02em;
+  transition: opacity .2s, transform .2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-fill::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  opacity: 0;
+  transition: opacity .3s;
+}
+.btn-fill:hover { transform: translateY(-2px); }
+.btn-fill:hover::before { opacity: 1; }
+.btn-fill span { position: relative; z-index: 1; }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent;
+  color: var(--text2);
+  padding: .9rem 2rem;
+  border-radius: 10px;
+  font-size: .95rem;
+  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  border: 1px solid var(--border2);
+  transition: color .2s, border-color .2s, background .2s;
+}
+.btn-outline:hover { color: var(--text); border-color: var(--accent); background: rgba(79,126,248,.06); }
+
+.hero-stats {
+  display: flex; gap: 0;
+  border-top: 1px solid var(--border);
+  padding-top: 2.5rem;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: slideIn .8s 1.05s var(--ease) forwards;
+}
+.hstat {
+  flex: 1; min-width: 100px;
+  padding-right: 2.5rem;
+  border-right: 1px solid var(--border);
+  margin-right: 2.5rem;
+}
+.hstat:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+.hstat-n {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -.03em;
+  background: linear-gradient(135deg, var(--text), var(--text2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+.hstat-l { font-size: .78rem; color: var(--text2); text-transform: uppercase; letter-spacing: .08em; font-weight: 500; font-family: 'Outfit', sans-serif; }
+
+/* ═══════════════════════════════════
+   SECTION COMMONS
+═══════════════════════════════════ */
+.section { padding: 6rem 5vw; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+.sec-eyebrow {
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  margin-bottom: .9rem;
+  font-family: 'Outfit', sans-serif;
+}
+.sec-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+.sec-h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: -.02em;
+  line-height: 1.08;
+  margin-bottom: .85rem;
+  color: var(--text);
+}
+.sec-body { color: var(--text2); font-weight: 300; max-width: 480px; margin-bottom: 3.5rem; font-size: 1rem; line-height: 1.85; font-family: 'Outfit', sans-serif; }
+.stripe { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+/* ═══════════════════════════════════
+   ABOUT
+═══════════════════════════════════ */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.about-copy p { font-size: .98rem; color: var(--text2); font-weight: 300; line-height: 1.9; margin-bottom: 1.2rem; font-family: 'Outfit', sans-serif; }
+.about-copy p strong { color: var(--text); font-weight: 600; }
+.tag-cloud { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1.8rem; }
+.tag {
+  font-size: .78rem;
+  color: var(--text2);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: .3rem .78rem;
+  border-radius: 5px;
+  font-weight: 500;
+  letter-spacing: .02em;
+  font-family: 'Outfit', sans-serif;
+  transition: color .2s, border-color .2s, background .2s;
+  cursor: default;
+}
+.tag:hover { color: var(--accent); border-color: rgba(79,126,248,.35); background: rgba(79,126,248,.06); }
+
+.info-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+.info-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+.info-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .95rem 1.4rem;
+  border-bottom: 1px solid var(--border);
+  font-size: .9rem;
+  font-family: 'Outfit', sans-serif;
+  transition: background .15s;
+}
+.info-row:hover { background: var(--card-h); }
+.info-row:last-child { border-bottom: none; }
+.ik { color: var(--text2); font-weight: 400; }
+.iv { color: var(--text); font-weight: 600; }
+.iv.go { color: var(--green); }
+
+/* ═══════════════════════════════════
+   SKILLS
+═══════════════════════════════════ */
+.skills-mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.sk {
+  background: var(--card);
+  padding: 1.8rem;
+  position: relative;
+  overflow: hidden;
+  transition: background .25s;
+}
+.sk::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s var(--ease);
+}
+.sk:hover { background: var(--card-h); }
+.sk:hover::after { transform: scaleX(1); }
+.sk-icon { font-size: 1.9rem; margin-bottom: 1rem; display: block; }
+.sk-name { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: .6rem; }
+.sk-items { font-size: .82rem; color: var(--text2); line-height: 2; font-weight: 300; font-family: 'Outfit', sans-serif; }
+
+/* ═══════════════════════════════════
+   EXPERIENCE
+═══════════════════════════════════ */
+.exp-track { position: relative; }
+.exp-track::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+}
+.exp-entry {
+  padding-left: 2.2rem;
+  padding-bottom: 3rem;
+  position: relative;
+}
+.exp-entry:last-child { padding-bottom: 0; }
+.exp-node {
+  position: absolute; left: -5px; top: 6px;
+  width: 11px; height: 11px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+}
+.exp-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.8rem;
+  transition: border-color .25s, transform .25s, background .25s;
+}
+.exp-card:hover {
+  border-color: var(--border2);
+  transform: translateX(4px);
+  background: var(--card-h);
+}
+.exp-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  flex-wrap: wrap; gap: .6rem;
+  margin-bottom: .4rem;
+}
+.exp-role {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--text);
+}
+.exp-period {
+  font-size: .72rem;
+  color: var(--accent);
+  background: rgba(79,126,248,.1);
+  border: 1px solid rgba(79,126,248,.2);
+  padding: .28rem .7rem;
+  border-radius: 100px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.exp-co {
+  font-size: .9rem;
+  color: var(--text2);
+  margin-bottom: 1.1rem;
+  font-family: 'Outfit', sans-serif;
+}
+.exp-co strong { color: var(--green); font-weight: 600; }
+.exp-pts { list-style: none; margin-bottom: 1.1rem; }
+.exp-pts li {
+  font-size: .9rem;
+  color: var(--text2);
+  padding: .3rem 0 .3rem 1.2rem;
+  line-height: 1.7;
+  position: relative;
+  font-weight: 300;
+  font-family: 'Outfit', sans-serif;
+}
+.exp-pts li::before {
+  content: '↗';
+  position: absolute; left: 0;
+  color: var(--accent);
+  font-size: .7rem;
+  top: .36rem;
+}
+.exp-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.chip {
+  font-size: .7rem;
+  color: var(--green);
+  background: rgba(16,217,160,.07);
+  border: 1px solid rgba(16,217,160,.18);
+  padding: .2rem .62rem;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: .03em;
+}
+
+/* ═══════════════════════════════════
+   APPS
+═══════════════════════════════════ */
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.app {
+  background: var(--card);
+  padding: 1.7rem;
+  position: relative;
+  overflow: hidden;
+  transition: background .25s;
+  cursor: default;
+}
+.app:hover { background: var(--card-h); }
+.app-num {
+  font-size: .7rem;
+  color: var(--text3);
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: .9rem;
+  font-family: 'Outfit', sans-serif;
+}
+.app-icon { font-size: 1.7rem; margin-bottom: .7rem; display: block; }
+.app-cat {
+  font-size: .72rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+  font-family: 'Outfit', sans-serif;
+}
+.app-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: .45rem;
+}
+.app-desc { font-size: .86rem; color: var(--text2); line-height: 1.75; margin-bottom: .9rem; font-weight: 300; font-family: 'Outfit', sans-serif; }
+.app-tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+.app-tag {
+  font-size: .65rem;
+  color: var(--text3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: .16rem .48rem;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════
+   CERTIFICATIONS
+═══════════════════════════════════ */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: .8rem;
+}
+.cert {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  display: flex; align-items: flex-start; gap: .9rem;
+  transition: border-color .2s, background .2s;
+}
+.cert:hover { border-color: var(--border2); background: var(--card-h); }
+.cert-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, rgba(79,126,248,.15), rgba(139,92,246,.15));
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .95rem;
+  flex-shrink: 0;
+}
+.cert-text { font-size: .8rem; color: var(--text2); font-weight: 400; line-height: 1.5; }
+
+/* ═══════════════════════════════════
+   CONTACT
+═══════════════════════════════════ */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.contact-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 6vw, 5.2rem);
+  font-weight: 900;
+  line-height: .92;
+  letter-spacing: -.03em;
+  color: var(--text);
+  margin-bottom: 1.4rem;
+}
+.contact-headline em {
+  font-style: italic;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--text3);
+}
+.contact-p { font-size: .95rem; color: var(--text2); font-weight: 300; line-height: 1.85; margin-bottom: 2.2rem; font-family: 'Outfit', sans-serif; }
+.contact-items { display: flex; flex-direction: column; gap: .65rem; }
+.ci {
+  display: flex; align-items: center; gap: 1rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.05rem 1.3rem;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.ci:hover { border-color: var(--border2); background: var(--card-h); transform: translateX(4px); }
+.ci-ico {
+  width: 38px; height: 38px;
+  background: var(--bg3);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: .95rem;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+.ci-lbl { font-size: .7rem; color: var(--text2); font-weight: 600; letter-spacing: .07em; text-transform: uppercase; margin-bottom: .1rem; font-family: 'Outfit', sans-serif; }
+.ci-val { font-size: .9rem; color: var(--text); font-weight: 500; font-family: 'Outfit', sans-serif; }
+
+.cta-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.8rem 2.3rem;
+  position: relative;
+  overflow: hidden;
+}
+.cta-panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+.cta-eyebrow { font-size: .72rem; color: var(--text2); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 1.4rem; font-family: 'Outfit', sans-serif; }
+.cta-h {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--text);
+  margin-bottom: .75rem;
+  line-height: 1.2;
+}
+.cta-p { font-size: .9rem; color: var(--text2); font-weight: 300; line-height: 1.85; margin-bottom: 1.8rem; font-family: 'Outfit', sans-serif; }
+.avail-row {
+  display: flex; align-items: center; gap: .6rem;
+  font-size: .8rem;
+  color: var(--green);
+  font-weight: 600;
+  letter-spacing: .05em;
+  margin-bottom: 1.6rem;
+  font-family: 'Outfit', sans-serif;
+}
+.avail-row::before {
+  content: '';
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  animation: blink 2s infinite;
+}
+.cta-actions { display: flex; gap: .7rem; flex-wrap: wrap; }
+.cta-main {
+  display: inline-flex; align-items: center; gap: .45rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  padding: .78rem 1.5rem;
+  border-radius: 9px;
+  font-size: .88rem;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  transition: opacity .2s, transform .2s;
+}
+.cta-main:hover { opacity: .88; transform: translateY(-1px); }
+.cta-sec {
+  display: inline-flex; align-items: center; gap: .45rem;
+  background: transparent;
+  color: var(--text2);
+  padding: .78rem 1.5rem;
+  border-radius: 9px;
+  font-size: .88rem;
+  font-weight: 500;
+  font-family: 'Outfit', sans-serif;
+  border: 1px solid var(--border2);
+  transition: color .2s, border-color .2s;
+}
+.cta-sec:hover { color: var(--text); border-color: var(--accent); }
+
+/* ═══════════════════════════════════
+   FOOTER
+═══════════════════════════════════ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem 5vw;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 1rem;
+  position: relative; z-index: 1;
+}
+.fl { font-size: .82rem; color: var(--text3); font-weight: 400; font-family: 'Outfit', sans-serif; }
+.fr { font-size: .82rem; color: var(--text3); font-family: 'Outfit', sans-serif; }
+
+/* ═══════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════ */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.reveal.d1 { transition-delay: .1s; }
+.reveal.d2 { transition-delay: .2s; }
+.reveal.d3 { transition-delay: .3s; }
+.reveal.d4 { transition-delay: .4s; }
+.reveal.in { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════ */
+@media (max-width: 900px) {
+  .nav-center { display: none; }
+  .about-grid { grid-template-columns: 1fr; }
+  .skills-mosaic { grid-template-columns: repeat(2, 1fr); }
+  .contact-grid { grid-template-columns: 1fr; }
+  .hero-stats .hstat { border-right: none; padding-right: 0; margin-right: 1.5rem; }
+}
+@media (max-width: 600px) {
+  .skills-mosaic { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+  .hstat { border-right: none !important; margin-right: 0 !important; }
+  .hero-h1 .line:nth-child(2) { -webkit-text-stroke-width: 1px; }
+}
+
+/* ═══════════════════════════════════
+   NUMBER COUNTER ANIMATION
+═══════════════════════════════════ */
+.count-num { display: inline-block; }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
+<div class="bg-orb orb3"></div>
+<div id="dot"></div>
+<div id="ring"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">Ali<span> Shaheen</span></a>
+  <ul class="nav-center">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#apps">Portfolio</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeBtn">🌙</button>
+    <a href="mailto:ali.moshaheen@gmail.com" id="nav-email" class="nav-hire">Hire Me</a>
+  </div>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="badge-dot"></span><span id="hero-status">Open to new opportunities</span></div>
+    <h1 class="hero-h1">
+      <span class="line">Senior iOS</span>
+      <span class="line">&amp; Flutter</span>
+      <span class="line">Developer.</span>
+    </h1>
+    <p class="hero-sub" id="hero-tagline"></p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-fill"><span>&#x2709; Get in Touch</span></a>
+      <a href="#" id="hero-linkedin" target="_blank" class="btn-outline">LinkedIn &#x2197;</a>
+      <a href="#" id="hero-github" target="_blank" class="btn-outline">GitHub &#x2197;</a>
+    </div>
+    <div class="hero-stats" id="hero-stats"></div>
+  </div>
+</section>
+
+<div class="stripe" id="about">
+  <div class="section">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="sec-eyebrow">About Me</div>
+        <h2 class="sec-h2">Building mobile<br>experiences that matter.</h2>
+        <div class="about-copy" id="about-copy"></div>
+        <div class="tag-cloud" id="about-tags"></div>
+      </div>
+      <div class="reveal d2">
+        <div class="info-card" id="info-card"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="skills">
+  <div class="section">
+    <div class="sec-eyebrow reveal">Technical Skills</div>
+    <h2 class="sec-h2 reveal d1">Everything I build with.</h2>
+    <p class="sec-body reveal d2">Full-stack mobile expertise across native iOS and cross-platform Flutter.</p>
+    <div class="skills-mosaic reveal d2" id="skills-grid"></div>
+  </div>
+</div>
+
+<div class="stripe" id="experience">
+  <div class="section">
+    <div class="sec-eyebrow reveal">Work History</div>
+    <h2 class="sec-h2 reveal d1">6+ years of shipping.</h2>
+    <p class="sec-body reveal d2">Led and built mobile products across Saudi Arabia's top studios.</p>
+    <div class="exp-track" id="exp-track"></div>
+  </div>
+</div>
+
+<div id="apps">
+  <div class="section">
+    <div class="sec-eyebrow reveal">Portfolio</div>
+    <h2 class="sec-h2 reveal d1">Apps I've shipped.</h2>
+    <p class="sec-body reveal d2">Production apps live on App Store and Google Play.</p>
+    <div class="apps-grid reveal d2" id="apps-grid"></div>
+  </div>
+</div>
+
+<div class="stripe">
+  <div class="section">
+    <div class="sec-eyebrow reveal">Certifications</div>
+    <h2 class="sec-h2 reveal d1">Always learning.</h2>
+    <div class="certs-grid reveal d2" id="certs-grid"></div>
+  </div>
+</div>
+
+<div id="contact">
+  <div class="section">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="sec-eyebrow">Contact</div>
+        <div class="contact-headline">Let's<br><em>work</em><br>together.</div>
+        <p class="contact-p">Open to full-time roles, freelance projects, and consulting. I work remotely across all time zones.</p>
+        <div class="contact-items" id="contact-items"></div>
+      </div>
+      <div class="reveal d2">
+        <div class="cta-panel">
+          <div class="cta-eyebrow">// Available Now</div>
+          <div class="cta-h">Looking for a Senior Mobile Developer?</div>
+          <p class="cta-p">Whether you need an iOS expert, a Flutter architect, or someone to lead your mobile team — I bring 6+ years of production experience and a track record of shipping quality apps on time.</p>
+          <div class="avail-row">Currently open to new opportunities</div>
+          <div class="cta-actions">
+            <a href="mailto:ali.moshaheen@gmail.com" id="cta-email" class="cta-main">Send Email &rarr;</a>
+            <a href="#" id="cta-linkedin" target="_blank" class="cta-sec">LinkedIn &#x2197;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="fl" id="footer-left">&#169; 2025 Ali Shaheen &#8212; Senior iOS &amp; Flutter Developer</div>
+  <div class="fr">Gaza, Palestine &middot; Available Worldwide</div>
+</footer>
+
+<script>
+// ── Embedded data (works without server) ──
+const PORTFOLIO_DATA = {"profile": {"name": "Ali Shaheen", "title": "Senior iOS & Flutter Developer", "subtitle": "Mobile Team Lead", "tagline": "Mobile Team Lead with 6+ years shipping production apps for 15+ international clients across Saudi Arabia, the Gulf, Egypt, the US, and Europe. Based in Gaza, Palestine.", "location": "Gaza, Palestine", "email": "ali.moshaheen@gmail.com", "phone": "+970 598 552 664", "linkedin": "https://linkedin.com/in/alishaheen98", "github": "https://github.com/AliShaheen98", "status": "Available Now", "available": true, "stats": [{"number": "6+", "label": "Years Experience"}, {"number": "20+", "label": "Apps Shipped"}, {"number": "15+", "label": "Int'l Clients"}, {"number": "5", "label": "Teams Led"}], "about": ["I'm a <strong>Senior Mobile Developer and Team Lead</strong> specializing in iOS (Swift, SwiftUI) and Flutter. I architect, build, and ship production apps for telecom, government, real estate, and services sectors.", "My career has taken me through <strong>Saudi Arabia's leading mobile studios</strong> — INOVAR and JIFF Technology — leading teams of 4–5 developers and delivering apps used by thousands.", "I care deeply about <strong>clean architecture, performance, and code quality</strong> — and I mentor teams to build the same way."], "tags": ["Swift", "SwiftUI", "Flutter", "Dart", "Objective-C", "Clean Architecture", "MVVM", "Bloc", "GetX", "Firebase", "CI/CD", "TDD"]}, "skills": [{"icon": "🍎", "name": "iOS Native", "items": "Swift · SwiftUI · UIKit\nObjective-C · Core Animation\nCore Location · ARKit · CoreML"}, {"icon": "💙", "name": "Flutter & Dart", "items": "Flutter 3 · Dart\nCross-platform iOS & Android\nBloc · Cubit · GetX · Riverpod"}, {"icon": "🏗️", "name": "Architecture", "items": "Clean Architecture · MVVM\nMVC · MVP · VIPER\nSOLID Principles"}, {"icon": "🔥", "name": "Backend & APIs", "items": "REST APIs · GraphQL\nFirebase (Firestore, FCM, Auth)\nGCP · AWS (EC2, S3)"}, {"icon": "⚙️", "name": "DevOps & CI/CD", "items": "Fastlane · Jenkins\nGitLab CI · Travis CI\nDocker · Azure DevOps"}, {"icon": "💳", "name": "Integrations", "items": "Stripe · Apple Pay · IAP\nGoogle Maps · Apple Maps\nOAuth · SSO · Push Notifications"}, {"icon": "🧪", "name": "Testing", "items": "Unit Testing\nWidget Testing\nIntegration Testing · TDD"}, {"icon": "📋", "name": "Leadership", "items": "Scrum · Kanban · Agile\nJira · Confluence\nSprint Planning · Reviews"}], "experience": [{"id": "exp1", "role": "Lead Mobile Developer", "badge": "iOS & Flutter", "company": "INOVAR", "location": "Riyadh, Saudi Arabia", "period": "Apr 2022 — Present", "current": true, "points": ["Led a team of 4–5 developers across sprint planning, code reviews, and delivery for 5+ production apps", "Architected scalable solutions using Clean Architecture, MVVM, Bloc, and GetX", "Built Balady 940 (MOMRA) — Government employee services app for Saudi Ministry of Municipality in Swift", "Built Lebara ONS — Telecom digital services platform for the Saudi market in Flutter", "Established CI/CD pipelines with Fastlane + Azure DevOps — shipped concept to production in under 2 months"], "chips": ["Balady 940", "Lebara ONS", "Jaree App"]}, {"id": "exp2", "role": "Mobile Team Lead", "badge": "iOS & Flutter", "company": "JIFF Technology", "location": "Riyadh, Saudi Arabia", "period": "Jun 2021 — Oct 2023", "current": false, "points": ["Promoted twice: Mid-Senior → Senior Developer → Mobile Team Lead", "Shipped 15+ production apps to App Store and Google Play as developer and team lead", "Developed Flutter cross-platform apps and native iOS apps with Swift, UIKit, and Core Animation", "Conducted technical interviews and mentored junior and senior developers"], "chips": ["Matn Talib Al-Ilm", "15+ apps shipped"]}, {"id": "exp3", "role": "iOS Developer", "badge": "", "company": "Future Vision Solutions", "location": "Riyadh, Saudi Arabia", "period": "Feb 2020 — Jan 2022", "current": false, "points": ["Started as paid trainee, rapidly progressed to full iOS Developer", "Built Mashi Delivery — On-demand delivery platform with real-time tracking in Swift", "Built Al-Sharif Real Estate — Property listings for residential and commercial sectors"], "chips": ["Mashi Delivery", "Al-Sharif Real Estate"]}, {"id": "exp4", "role": "Freelance iOS & Flutter Developer", "badge": "", "company": "Self-Employed", "location": "Remote — Upwork & Mostaql", "period": "Dec 2018 — Jan 2023", "current": false, "points": ["Delivered 10+ apps to App Store and Google Play for clients in Saudi Arabia, Egypt, US, and Gulf", "Managed the full app lifecycle independently: requirements, architecture, development, testing, deployment"], "chips": ["Exford Rent a Car", "WeeGoApp", "Drive Square", "Louz App", "Maghsool", "Adhmn"]}], "projects": [{"id": "p1", "num": "01", "icon": "🏛️", "category": "Government · iOS Native", "name": "Balady 940 (MOMRA)", "desc": "Employee services app for Saudi Ministry of Municipality. Handles sensitive data for thousands of staff.", "tags": ["Swift", "iOS", "Clean Arch"], "link": ""}, {"id": "p2", "num": "02", "icon": "📡", "category": "Telecom · Flutter", "name": "Lebara ONS", "desc": "Telecom digital services platform for Saudi market with complex carrier API integrations.", "tags": ["Flutter", "GetX", "Telecom APIs"], "link": ""}, {"id": "p3", "num": "03", "icon": "🚗", "category": "Car Rental · SwiftUI", "name": "Exford Rent a Car", "desc": "Full car rental booking platform built entirely with SwiftUI's declarative UI. Live on App Store.", "tags": ["SwiftUI", "iOS", "App Store"], "link": "https://apps.apple.com/app/id6479560795"}, {"id": "p4", "num": "04", "icon": "🛎️", "category": "On-demand · Flutter", "name": "WeeGoApp", "desc": "On-demand services with real-time tracking and Firebase backend. Cross-platform iOS & Android.", "tags": ["Flutter", "Firebase", "Real-time"], "link": "https://apps.apple.com/app/id6754606579"}, {"id": "p5", "num": "05", "icon": "🚙", "category": "Car Rental · Flutter", "name": "Drive Square", "desc": "Cross-platform car rental system with full booking flows and Google Maps integration.", "tags": ["Flutter", "Google Maps", "Booking"], "link": ""}, {"id": "p6", "num": "06", "icon": "🚿", "category": "Services · Swift → Flutter", "name": "Louz App", "desc": "Car wash booking with real-time tracking. Started as iOS Native Swift then migrated to Flutter.", "tags": ["Swift", "Flutter", "Migration"], "link": "https://apps.apple.com/app/id6451120012"}, {"id": "p7", "num": "07", "icon": "👕", "category": "Laundry · iOS + Android", "name": "Maghsool", "desc": "On-demand laundry services built with iOS Native Swift plus separate Google Play Android version.", "tags": ["Swift", "iOS", "Android"], "link": "https://apps.apple.com/app/id6670730000"}, {"id": "p8", "num": "08", "icon": "🏠", "category": "Home Services · Flutter", "name": "Adhmn", "desc": "Home maintenance platform with Firebase backend, technician dispatch, and service booking.", "tags": ["Flutter", "Firebase", "Dispatch"], "link": ""}, {"id": "p9", "num": "09", "icon": "🏡", "category": "Real Estate · Swift", "name": "Al-Sharif Real Estate", "desc": "Property listings covering residential, commercial, and industrial sectors with REST API.", "tags": ["Swift", "REST API", "Apple Maps"], "link": "https://apps.apple.com/app/id1609398407"}, {"id": "p10", "num": "10", "icon": "🛒", "category": "E-Commerce · Swift", "name": "Al Qannsa", "desc": "E-commerce for Middle East shopping with REST APIs and full payment integration.", "tags": ["Swift", "REST API", "Payments"], "link": "https://apps.apple.com/app/id1513695726"}, {"id": "p11", "num": "11", "icon": "🚚", "category": "Delivery · Flutter", "name": "Mashi Delivery", "desc": "On-demand delivery platform with real-time order tracking and full courier management.", "tags": ["Flutter", "Real-time", "Tracking"], "link": ""}, {"id": "p12", "num": "12", "icon": "📚", "category": "Education · iOS", "name": "Matn Talib Al-Ilm", "desc": "Educational iOS app with content delivery and user management. Available on App Store.", "tags": ["Swift", "iOS", "Content"], "link": "https://apps.apple.com/app/id1439459539"}], "certifications": [{"icon": "🍎", "title": "Complete iOS App Development Bootcamp — Swift & Objective-C"}, {"icon": "💙", "title": "The Complete Flutter & Dart Development Course"}, {"icon": "🏗️", "title": "Flutter Clean Architecture — Flutter 3"}, {"icon": "📋", "title": "Project Management Crash Course"}, {"icon": "⚙️", "title": "Nintex K2 Five for SharePoint Practitioner"}, {"icon": "🔌", "title": "Nintex Automation: Business Analyst & IT Developer"}]};
+
+// ── Cursor ──
+const dot=document.getElementById('dot'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{dot.style.width='14px';dot.style.height='14px';ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(79,126,248,.75)'});
+  el.addEventListener('mouseleave',()=>{dot.style.width='6px';dot.style.height='6px';ring.style.width='28px';ring.style.height='28px';ring.style.borderColor='rgba(79,126,248,.5)'});
+});
+
+// ── Nav ──
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('stuck',window.scrollY>50));
+
+// ── Theme ──
+document.getElementById('themeBtn').addEventListener('click',()=>{
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('themeBtn').textContent=isDark?'🌙':'☀️';
+});
+
+// ── Scroll Reveal ──
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revObs.unobserve(e.target)}});
+},{threshold:.08});
+function initReveal(){document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));}
+
+// ── Counter ──
+function animCount(el){
+  const target=parseInt(el.dataset.target),dur=1800,start=performance.now();
+  function step(now){const p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3);el.textContent=Math.round(ease*target);if(p<1)requestAnimationFrame(step);}
+  requestAnimationFrame(step);
+}
+const countObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.count-num').forEach(animCount);countObs.unobserve(e.target)}});
+},{threshold:.5});
+
+// ── Stagger apps ──
+function staggerApps(){
+  document.querySelectorAll('.app').forEach((el,i)=>{
+    el.style.transitionDelay=i*.04+'s';el.style.opacity='0';el.style.transform='translateY(16px)';
+    el.style.transition='background .25s,opacity .5s ease,transform .5s ease';
+  });
+  const apObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.app').forEach(c=>{c.style.opacity='1';c.style.transform='translateY(0)'});apObs.unobserve(e.target)}});
+  },{threshold:.05});
+  document.querySelectorAll('.apps-grid').forEach(el=>apObs.observe(el));
+}
+
+// ── Render ──
+function renderAll(d){
+  const p=d.profile;
+
+  // Hero
+  document.getElementById('nav-email').href='mailto:'+p.email;
+  document.getElementById('hero-linkedin').href=p.linkedin;
+  document.getElementById('hero-github').href=p.github;
+  document.getElementById('hero-tagline').innerHTML=p.tagline;
+  document.getElementById('hero-status').textContent=p.available?'Open to new opportunities':'Currently unavailable';
+
+  // Stats
+  document.getElementById('hero-stats').innerHTML=p.stats.map(s=>{
+    const num=s.number.replace(/[^0-9]/g,''),suf=s.number.replace(/[0-9]/g,'');
+    return '<div class="hstat"><span class="hstat-n"><span class="count-num" data-target="'+num+'">0</span>'+suf+'</span><div class="hstat-l">'+s.label+'</div></div>';
+  }).join('');
+
+  // About
+  document.getElementById('about-copy').innerHTML=p.about.map(t=>'<p>'+t+'</p>').join('');
+  document.getElementById('about-tags').innerHTML=p.tags.map(t=>'<span class="tag">'+t+'</span>').join('');
+
+  // Info card
+  document.getElementById('info-card').innerHTML=
+    '<div class="info-row"><span class="ik">Location</span><span class="iv">'+p.location+'</span></div>'+
+    '<div class="info-row"><span class="ik">Status</span><span class="iv go">'+(p.available?'&#x2736; ':'')+p.status+'</span></div>'+
+    '<div class="info-row"><span class="ik">iOS Experience</span><span class="iv">6+ years</span></div>'+
+    '<div class="info-row"><span class="ik">Flutter Experience</span><span class="iv">4+ years</span></div>'+
+    '<div class="info-row"><span class="ik">Team Size Led</span><span class="iv">4&ndash;5 developers</span></div>'+
+    '<div class="info-row"><span class="ik">Apps on Store</span><span class="iv">20+ production</span></div>'+
+    '<div class="info-row"><span class="ik">Languages</span><span class="iv">Arabic (Native) &middot; English C1</span></div>'+
+    '<div class="info-row"><span class="ik">Education</span><span class="iv">B.Sc. Software Dev &mdash; IUG</span></div>'+
+    '<div class="info-row"><span class="ik">Email</span><span class="iv">'+p.email+'</span></div>';
+
+  // Skills
+  document.getElementById('skills-grid').innerHTML=d.skills.map(s=>
+    '<div class="sk"><span class="sk-icon">'+s.icon+'</span><div class="sk-name">'+s.name+'</div><div class="sk-items">'+s.items.replace(/\n/g,'<br>')+'</div></div>'
+  ).join('');
+
+  // Experience
+  document.getElementById('exp-track').innerHTML=d.experience.map((e,i)=>
+    '<div class="exp-entry reveal'+(i>0?' d'+Math.min(i,3):'')+'">'+
+    '<div class="exp-node"></div>'+
+    '<div class="exp-card">'+
+    '<div class="exp-top">'+
+    '<div class="exp-role">'+e.role+(e.badge?'<span style="font-size:.64rem;background:rgba(79,126,248,.12);border:1px solid rgba(79,126,248,.22);color:var(--accent);padding:.16rem .52rem;border-radius:4px;font-family:Outfit,sans-serif;margin-left:.75rem;vertical-align:middle;text-transform:uppercase">'+e.badge+'</span>':'')+'</div>'+
+    '<div class="exp-period">'+e.period+'</div>'+
+    '</div>'+
+    '<div class="exp-co"><strong>'+e.company+'</strong> &middot; '+e.location+'</div>'+
+    '<ul class="exp-pts">'+e.points.map(pt=>'<li>'+pt+'</li>').join('')+'</ul>'+
+    '<div class="exp-chips">'+e.chips.map(c=>'<span class="chip">'+c+'</span>').join('')+'</div>'+
+    '</div></div>'
+  ).join('');
+
+  // Apps
+  document.getElementById('apps-grid').innerHTML=d.projects.map(pr=>
+    '<div class="app"'+(pr.link?' onclick="window.open(\'' +pr.link+ '\',\'_blank\')" style="cursor:pointer"':'')+'>'+
+    '<div class="app-num">'+pr.num+'</div>'+
+    '<span class="app-icon">'+pr.icon+'</span>'+
+    '<div class="app-cat">'+pr.category+'</div>'+
+    '<div class="app-name">'+pr.name+(pr.link?' <span style="font-size:.7rem;color:var(--accent)">&#x2197;</span>':'')+'</div>'+
+    '<div class="app-desc">'+pr.desc+'</div>'+
+    '<div class="app-tags">'+pr.tags.map(t=>'<span class="app-tag">'+t+'</span>').join('')+'</div>'+
+    '</div>'
+  ).join('');
+
+  // Certs
+  document.getElementById('certs-grid').innerHTML=d.certifications.map(c=>
+    '<div class="cert"><div class="cert-icon">'+c.icon+'</div><div class="cert-text">'+c.title+'</div></div>'
+  ).join('');
+
+  // Contact
+  document.getElementById('contact-items').innerHTML=
+    '<a href="mailto:'+p.email+'" class="ci"><div class="ci-ico">&#x2709;</div><div><div class="ci-lbl">Email</div><div class="ci-val">'+p.email+'</div></div></a>'+
+    '<a href="tel:'+p.phone.replace(/\s/g,'')+'" class="ci"><div class="ci-ico">&#128222;</div><div><div class="ci-lbl">Phone</div><div class="ci-val">'+p.phone+'</div></div></a>'+
+    '<a href="'+p.linkedin+'" target="_blank" class="ci"><div class="ci-ico">&#128188;</div><div><div class="ci-lbl">LinkedIn</div><div class="ci-val">linkedin.com/in/alishaheen98</div></div></a>'+
+    '<a href="'+p.github+'" target="_blank" class="ci"><div class="ci-ico">&#9000;</div><div><div class="ci-lbl">GitHub</div><div class="ci-val">github.com/AliShaheen98</div></div></a>';
+
+  document.getElementById('cta-email').href='mailto:'+p.email;
+  document.getElementById('cta-linkedin').href=p.linkedin;
+  document.getElementById('footer-left').textContent='\u00a9 2025 '+p.name+' \u2014 '+p.title;
+}
+
+// ── Init ──
+// Try API first (when running with server), fallback to embedded data
+async function init(){
+  try {
+    const res = await fetch('/api/portfolio');
+    if(!res.ok) throw new Error('no server');
+    const data = await res.json();
+    renderAll(data);
+  } catch(e) {
+    // No server — use embedded data
+    renderAll(PORTFOLIO_DATA);
+  }
+  initReveal();
+  staggerApps();
+  const s=document.getElementById('hero-stats');
+  if(s) countObs.observe(s);
+}
+
+init();
+</script>
+</body>
+</html>
