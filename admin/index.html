@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Ali Shaheen Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0b12;--bg2:#0f1019;--card:#14151f;--card2:#1a1b28;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);
+  --accent:#4f7ef8;--accent2:#8b5cf6;--green:#10d9a0;--red:#f43f5e;--amber:#f59e0b;
+  --text:#e2e4f0;--text2:#6b6f90;--text3:#3a3d58;
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+
+/* Login */
+#login-screen{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:1000}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:3rem 2.5rem;width:360px;text-align:center;position:relative;overflow:hidden}
+.login-box::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.login-logo{font-size:1.6rem;font-weight:800;margin-bottom:.3rem;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.login-sub{color:var(--text2);font-size:.85rem;margin-bottom:2rem}
+.login-input{width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:.8rem 1rem;border-radius:10px;font-size:.95rem;font-family:'Outfit',sans-serif;margin-bottom:1rem;outline:none;transition:border-color .2s}
+.login-input:focus{border-color:var(--accent)}
+.login-btn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:none;padding:.85rem;border-radius:10px;font-size:.95rem;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;transition:opacity .2s}
+.login-btn:hover{opacity:.88}
+.login-err{color:var(--red);font-size:.82rem;margin-top:.75rem;display:none}
+
+/* Main layout */
+#app{display:none;min-height:100vh;display:none;grid-template-columns:240px 1fr}
+#app.active{display:grid}
+
+/* Sidebar */
+aside{background:var(--bg2);border-right:1px solid var(--border);padding:1.5rem 0;position:sticky;top:0;height:100vh;overflow-y:auto}
+.sidebar-logo{padding:0 1.5rem 1.5rem;font-size:1.05rem;font-weight:800;border-bottom:1px solid var(--border)}
+.sidebar-logo span{color:var(--accent)}
+.nav-section{padding:.75rem 1.5rem .3rem;font-size:.65rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.12em;margin-top:.5rem}
+.nav-item{display:flex;align-items:center;gap:.75rem;padding:.7rem 1.5rem;color:var(--text2);cursor:pointer;transition:all .2s;font-size:.88rem;font-weight:500;border-left:2px solid transparent}
+.nav-item:hover{color:var(--text);background:rgba(79,126,248,.06)}
+.nav-item.active{color:var(--accent);background:rgba(79,126,248,.08);border-left-color:var(--accent)}
+.nav-item .ico{font-size:1rem;width:20px;text-align:center}
+.sidebar-footer{padding:1.5rem;border-top:1px solid var(--border);margin-top:auto}
+.visit-site-btn{display:block;text-align:center;background:rgba(79,126,248,.1);border:1px solid rgba(79,126,248,.25);color:var(--accent);padding:.6rem;border-radius:8px;text-decoration:none;font-size:.82rem;font-weight:600;margin-bottom:.6rem;transition:background .2s}
+.visit-site-btn:hover{background:rgba(79,126,248,.18)}
+.logout-btn{width:100%;background:transparent;border:1px solid var(--border2);color:var(--text2);padding:.6rem;border-radius:8px;font-size:.82rem;font-family:'Outfit',sans-serif;cursor:pointer;transition:all .2s}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* Main content */
+main{padding:2rem;overflow-y:auto}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:1.6rem;font-weight:800;margin-bottom:.4rem;letter-spacing:-.02em}
+.page-sub{color:var(--text2);font-size:.88rem;margin-bottom:2rem}
+
+/* Cards */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.6rem;margin-bottom:1.2rem}
+.panel-title{font-size:.82rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem}
+
+/* Form elements */
+label{display:block;font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.06em}
+input[type=text],input[type=email],input[type=url],input[type=password],textarea,select{
+  width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);
+  padding:.72rem .9rem;border-radius:9px;font-size:.9rem;font-family:'Outfit',sans-serif;
+  outline:none;transition:border-color .2s;margin-bottom:1rem;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:100px;line-height:1.6}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-grid .full{grid-column:1/-1}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.45rem;padding:.65rem 1.3rem;border-radius:8px;font-size:.84rem;font-weight:600;font-family:'Outfit',sans-serif;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+.btn-primary:hover{opacity:.88}
+.btn-danger{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.25)}
+.btn-danger:hover{background:rgba(244,63,94,.18)}
+.btn-success{background:rgba(16,217,160,.1);color:var(--green);border:1px solid rgba(16,217,160,.25)}
+.btn-success:hover{background:rgba(16,217,160,.18)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text)}
+.btn-sm{padding:.42rem .9rem;font-size:.78rem}
+
+/* Items list */
+.item-list{display:flex;flex-direction:column;gap:.6rem}
+.item-row{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.2rem;display:flex;align-items:center;gap:1rem}
+.item-row:hover{border-color:var(--border2)}
+.item-drag{cursor:grab;color:var(--text3);font-size:1.1rem;flex-shrink:0}
+.item-content{flex:1;min-width:0}
+.item-title{font-weight:600;font-size:.9rem;margin-bottom:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-meta{font-size:.76rem;color:var(--text2)}
+.item-actions{display:flex;gap:.4rem;flex-shrink:0}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity .25s;padding:1rem}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:2rem;width:100%;max-width:580px;max-height:85vh;overflow-y:auto;transform:scale(.95);transition:transform .25s;position:relative}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-title{font-size:1.15rem;font-weight:800;margin-bottom.1rem;margin-bottom:1.5rem;letter-spacing:-.02em}
+.modal-close{position:absolute;top:1.2rem;right:1.2rem;background:var(--bg2);border:1px solid var(--border);color:var(--text2);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+
+/* Toast */
+#toast{position:fixed;bottom:2rem;right:2rem;padding:.8rem 1.4rem;border-radius:10px;font-size:.88rem;font-weight:600;z-index:9999;transform:translateY(80px);transition:transform .3s;pointer-events:none}
+#toast.show{transform:translateY(0)}
+#toast.success{background:#10d9a0;color:#000}
+#toast.error{background:#f43f5e;color:#fff}
+
+/* Toggle */
+.toggle-wrap{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.toggle{width:44px;height:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:100px;cursor:pointer;position:relative;transition:background .2s}
+.toggle.on{background:var(--green);border-color:var(--green)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:left .2s}
+.toggle.on::after{left:22px}
+.toggle-label{font-size:.9rem;font-weight:500}
+
+/* Tags input */
+.tags-container{display:flex;flex-wrap:wrap;gap:.4rem;background:var(--bg2);border:1px solid var(--border2);border-radius:9px;padding:.5rem .7rem;min-height:44px;cursor:text;margin-bottom:1rem}
+.tag-item{background:rgba(79,126,248,.12);border:1px solid rgba(79,126,248,.25);color:var(--accent);font-size:.76rem;padding:.22rem .6rem;border-radius:4px;display:flex;align-items:center;gap:.35rem}
+.tag-item button{background:none;border:none;color:inherit;cursor:pointer;font-size:.8rem;line-height:1;padding:0}
+.tags-input{background:none;border:none;color:var(--text);font-size:.88rem;font-family:'Outfit',sans-serif;outline:none;min-width:80px;flex:1;padding:.1rem 0;margin:0}
+
+/* Points list */
+.points-list{display:flex;flex-direction:column;gap:.5rem;margin-bottom:.7rem}
+.point-row{display:flex;gap:.5rem;align-items:flex-start}
+.point-row input{flex:1;margin-bottom:0}
+.point-remove{background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.2);color:var(--red);padding:.45rem .7rem;border-radius:7px;cursor:pointer;font-size:.9rem;flex-shrink:0;transition:background .2s}
+.point-remove:hover{background:rgba(244,63,94,.2)}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-bottom:1.5rem}
+.stat-card{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center}
+.stat-card .num{font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-card .lbl{font-size:.72rem;color:var(--text2);margin-top:.2rem}
+
+/* Badge */
+.badge{font-size:.68rem;padding:.2rem .6rem;border-radius:4px;font-weight:600}
+.badge-green{background:rgba(16,217,160,.1);color:var(--green);border:1px solid rgba(16,217,160,.2)}
+.badge-blue{background:rgba(79,126,248,.1);color:var(--accent);border:1px solid rgba(79,126,248,.2)}
+.badge-red{background:rgba(244,63,94,.1);color:var(--red);border:1px solid rgba(244,63,94,.2)}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Ali Shaheen</div>
+    <div class="login-sub">Portfolio Admin Panel</div>
+    <input type="password" class="login-input" id="login-pass" placeholder="Enter password..." onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="login-err">Wrong password. Try again.</div>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app">
+  <!-- Sidebar -->
+  <aside>
+    <div class="sidebar-logo">Ali <span>Shaheen</span><br><span style="font-size:.7rem;color:var(--text2);font-weight:400">Admin Panel</span></div>
+
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" onclick="showPage('dashboard')"><span class="ico">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showPage('profile')"><span class="ico">👤</span> Profile & Info</div>
+
+    <div class="nav-section">Content</div>
+    <div class="nav-item" onclick="showPage('skills')"><span class="ico">⚡</span> Skills</div>
+    <div class="nav-item" onclick="showPage('experience')"><span class="ico">💼</span> Experience</div>
+    <div class="nav-item" onclick="showPage('projects')"><span class="ico">📱</span> Projects</div>
+    <div class="nav-item" onclick="showPage('certifications')"><span class="ico">🎓</span> Certifications</div>
+
+    <div class="nav-section">Settings</div>
+    <div class="nav-item" onclick="showPage('settings')"><span class="ico">⚙️</span> Settings</div>
+
+    <div style="flex:1"></div>
+    <div class="sidebar-footer">
+      <a href="/" target="_blank" class="visit-site-btn">🌐 View Website</a>
+      <button class="logout-btn" onclick="logout()">Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Dashboard -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub">Welcome back! Here's an overview of your portfolio.</div>
+      <div class="stats-row" id="dash-stats"></div>
+      <div class="panel">
+        <div class="panel-title">🚀 Quick Actions</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.7rem">
+          <button class="btn btn-primary" onclick="showPage('projects');openProjectModal()">＋ Add New App</button>
+          <button class="btn btn-success" onclick="showPage('experience');openExpModal()">＋ Add Experience</button>
+          <button class="btn btn-ghost" onclick="showPage('profile')">✏️ Edit Profile</button>
+          <a href="/" target="_blank" class="btn btn-ghost">🌐 View Site</a>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-title">ℹ️ How to use</div>
+        <div style="color:var(--text2);font-size:.88rem;line-height:1.9">
+          <strong style="color:var(--text)">Profile</strong> — Edit your name, tagline, contact info, social links, and availability status.<br>
+          <strong style="color:var(--text)">Skills</strong> — Add, edit, or remove skill categories.<br>
+          <strong style="color:var(--text)">Experience</strong> — Manage your work history with roles, companies, and bullet points.<br>
+          <strong style="color:var(--text)">Projects</strong> — Add/edit/delete apps with icons, descriptions, and App Store links.<br>
+          <strong style="color:var(--text)">Certifications</strong> — Manage your certificates.<br>
+          <strong style="color:var(--text)">All changes save instantly</strong> and appear live on your website.
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="page" id="page-profile">
+      <div class="page-title">Profile & Info</div>
+      <div class="page-sub">Edit your personal info, contact details, and social links.</div>
+
+      <div class="panel">
+        <div class="panel-title">👤 Basic Info</div>
+        <div class="form-grid">
+          <div><label>Full Name</label><input type="text" id="p-name"></div>
+          <div><label>Title</label><input type="text" id="p-title"></div>
+          <div class="full"><label>Tagline (shown in hero)</label><textarea id="p-tagline" style="min-height:70px"></textarea></div>
+          <div><label>Location</label><input type="text" id="p-location"></div>
+          <div><label>Status Text</label><input type="text" id="p-status"></div>
+        </div>
+        <div class="toggle-wrap">
+          <div class="toggle" id="avail-toggle" onclick="toggleAvail()"></div>
+          <span class="toggle-label">Available for new opportunities</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">📞 Contact & Social</div>
+        <div class="form-grid">
+          <div><label>Email</label><input type="email" id="p-email"></div>
+          <div><label>Phone</label><input type="text" id="p-phone"></div>
+          <div><label>LinkedIn URL</label><input type="url" id="p-linkedin"></div>
+          <div><label>GitHub URL</label><input type="url" id="p-github"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">📊 Hero Stats</div>
+        <div id="stats-editor"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addStat()">＋ Add Stat</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">🏷️ Skill Tags (About section)</div>
+        <label>Press Enter or comma to add a tag</label>
+        <div class="tags-container" id="tags-container" onclick="document.getElementById('tag-input').focus()">
+          <input type="text" class="tags-input" id="tag-input" placeholder="Add tag..." onkeydown="handleTagInput(event)">
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">📝 About Paragraphs</div>
+        <div id="about-editor"></div>
+        <button class="btn btn-ghost btn-sm" onclick="addAboutPara()">＋ Add Paragraph</button>
+      </div>
+
+      <button class="btn btn-primary" onclick="saveProfile()">💾 Save All Changes</button>
+    </div>
+
+    <!-- Skills -->
+    <div class="page" id="page-skills">
+      <div class="page-title">Skills</div>
+      <div class="page-sub">Manage your technical skill categories.</div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="btn btn-primary" onclick="openSkillModal()">＋ Add Skill</button>
+      </div>
+      <div class="item-list" id="skills-list"></div>
+      <div style="margin-top:1rem"><button class="btn btn-success" onclick="saveSkills()">💾 Save Order</button></div>
+    </div>
+
+    <!-- Experience -->
+    <div class="page" id="page-experience">
+      <div class="page-title">Experience</div>
+      <div class="page-sub">Manage your work history.</div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="btn btn-primary" onclick="openExpModal()">＋ Add Experience</button>
+      </div>
+      <div class="item-list" id="exp-list"></div>
+    </div>
+
+    <!-- Projects -->
+    <div class="page" id="page-projects">
+      <div class="page-title">Projects & Apps</div>
+      <div class="page-sub">Manage your portfolio apps.</div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="btn btn-primary" onclick="openProjectModal()">＋ Add App</button>
+      </div>
+      <div class="item-list" id="projects-list"></div>
+    </div>
+
+    <!-- Certifications -->
+    <div class="page" id="page-certifications">
+      <div class="page-title">Certifications</div>
+      <div class="page-sub">Manage your certificates and courses.</div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <button class="btn btn-primary" onclick="openCertModal()">＋ Add Certification</button>
+      </div>
+      <div class="item-list" id="certs-list"></div>
+    </div>
+
+    <!-- Settings -->
+    <div class="page" id="page-settings">
+      <div class="page-title">Settings</div>
+      <div class="page-sub">Security and account settings.</div>
+      <div class="panel">
+        <div class="panel-title">🔐 Change Password</div>
+        <div style="max-width:360px">
+          <label>New Password</label>
+          <input type="password" id="new-pass" placeholder="Min 6 characters">
+          <label>Confirm Password</label>
+          <input type="password" id="confirm-pass" placeholder="Repeat new password">
+          <button class="btn btn-primary" onclick="changePassword()">🔒 Update Password</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Modals -->
+<div class="modal-overlay" id="skill-modal">
+  <div class="modal">
+    <div class="modal-title" id="skill-modal-title">Add Skill</div>
+    <button class="modal-close" onclick="closeModal('skill-modal')">✕</button>
+    <input type="hidden" id="skill-edit-index">
+    <label>Icon (emoji)</label><input type="text" id="sk-icon" placeholder="🍎">
+    <label>Skill Name</label><input type="text" id="sk-name" placeholder="iOS Native">
+    <label>Items (one per line)</label><textarea id="sk-items" placeholder="Swift&#10;SwiftUI&#10;UIKit"></textarea>
+    <div style="display:flex;gap:.7rem">
+      <button class="btn btn-primary" onclick="saveSkill()">💾 Save</button>
+      <button class="btn btn-ghost" onclick="closeModal('skill-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="exp-modal">
+  <div class="modal">
+    <div class="modal-title" id="exp-modal-title">Add Experience</div>
+    <button class="modal-close" onclick="closeModal('exp-modal')">✕</button>
+    <input type="hidden" id="exp-edit-id">
+    <div class="form-grid">
+      <div class="full"><label>Job Title / Role</label><input type="text" id="exp-role" placeholder="Lead Mobile Developer"></div>
+      <div><label>Badge (optional)</label><input type="text" id="exp-badge" placeholder="iOS & Flutter"></div>
+      <div><label>Company</label><input type="text" id="exp-company" placeholder="INOVAR"></div>
+      <div><label>Location</label><input type="text" id="exp-location" placeholder="Riyadh, Saudi Arabia"></div>
+      <div><label>Period</label><input type="text" id="exp-period" placeholder="Apr 2022 — Present"></div>
+      <div>
+        <label>Current Job?</label>
+        <select id="exp-current"><option value="true">Yes</option><option value="false">No</option></select>
+      </div>
+    </div>
+    <label>Bullet Points</label>
+    <div class="points-list" id="exp-points-list"></div>
+    <button class="btn btn-ghost btn-sm" onclick="addExpPoint()" style="margin-bottom:1rem">＋ Add Point</button>
+    <label>App/Project Chips</label>
+    <input type="text" id="exp-chips" placeholder="Balady 940, Lebara ONS, Jaree App (comma separated)">
+    <div style="display:flex;gap:.7rem">
+      <button class="btn btn-primary" onclick="saveExp()">💾 Save</button>
+      <button class="btn btn-ghost" onclick="closeModal('exp-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="project-modal">
+  <div class="modal">
+    <div class="modal-title" id="project-modal-title">Add App</div>
+    <button class="modal-close" onclick="closeModal('project-modal')">✕</button>
+    <input type="hidden" id="proj-edit-id">
+    <div class="form-grid">
+      <div><label>Icon (emoji)</label><input type="text" id="proj-icon" placeholder="📱"></div>
+      <div><label>Category</label><input type="text" id="proj-category" placeholder="Telecom · Flutter"></div>
+      <div class="full"><label>App Name</label><input type="text" id="proj-name" placeholder="Lebara ONS"></div>
+      <div class="full"><label>Description</label><textarea id="proj-desc" style="min-height:80px" placeholder="Brief description..."></textarea></div>
+      <div class="full"><label>App Store / Play Store Link (optional)</label><input type="url" id="proj-link" placeholder="https://apps.apple.com/..."></div>
+      <div class="full"><label>Tags (comma separated)</label><input type="text" id="proj-tags" placeholder="Flutter, Firebase, Real-time"></div>
+    </div>
+    <div style="display:flex;gap:.7rem">
+      <button class="btn btn-primary" onclick="saveProject()">💾 Save</button>
+      <button class="btn btn-ghost" onclick="closeModal('project-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="cert-modal">
+  <div class="modal">
+    <div class="modal-title">Add Certification</div>
+    <button class="modal-close" onclick="closeModal('cert-modal')">✕</button>
+    <input type="hidden" id="cert-edit-index">
+    <label>Icon (emoji)</label><input type="text" id="cert-icon" placeholder="🎓">
+    <label>Certificate Title</label><input type="text" id="cert-title" placeholder="Complete iOS Development Bootcamp">
+    <div style="display:flex;gap:.7rem">
+      <button class="btn btn-primary" onclick="saveCert()">💾 Save</button>
+      <button class="btn btn-ghost" onclick="closeModal('cert-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let TOKEN = localStorage.getItem('admin_token');
+let DATA = {};
+
+// ── Auth ──
+async function doLogin(){
+  const pass = document.getElementById('login-pass').value;
+  const res = await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass})});
+  const json = await res.json();
+  if(res.ok){
+    TOKEN = json.token;
+    localStorage.setItem('admin_token', TOKEN);
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').classList.add('active');
+    loadAll();
+  } else {
+    document.getElementById('login-err').style.display='block';
+  }
+}
+function logout(){localStorage.removeItem('admin_token');location.reload();}
+
+async function api(method, path, body){
+  const res = await fetch('/api/admin'+path,{method,headers:{'Content-Type':'application/json','Authorization':'Bearer '+TOKEN},body:body?JSON.stringify(body):undefined});
+  if(res.status===401){logout();return;}
+  return res.json();
+}
+
+function toast(msg, type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show '+type;
+  setTimeout(()=>t.className='',2500);
+}
+
+// ── Navigation ──
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{if(n.textContent.toLowerCase().includes(id)||n.getAttribute('onclick').includes("'"+id+"'"))n.classList.add('active')});
+}
+
+// ── Load all data ──
+async function loadAll(){
+  const res = await fetch('/api/portfolio');
+  DATA = await res.json();
+  renderDashboard();
+  renderProfileForm();
+  renderSkillsList();
+  renderExpList();
+  renderProjectsList();
+  renderCertsList();
+}
+
+// ── Dashboard ──
+function renderDashboard(){
+  const p = DATA.profile;
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="stat-card"><div class="num">${DATA.projects.length}</div><div class="lbl">Apps</div></div>
+    <div class="stat-card"><div class="num">${DATA.experience.length}</div><div class="lbl">Experiences</div></div>
+    <div class="stat-card"><div class="num">${DATA.skills.length}</div><div class="lbl">Skills</div></div>
+    <div class="stat-card"><div class="num">${DATA.certifications.length}</div><div class="lbl">Certs</div></div>
+  `;
+}
+
+// ── Profile ──
+function renderProfileForm(){
+  const p = DATA.profile;
+  document.getElementById('p-name').value=p.name||'';
+  document.getElementById('p-title').value=p.title||'';
+  document.getElementById('p-tagline').value=p.tagline||'';
+  document.getElementById('p-location').value=p.location||'';
+  document.getElementById('p-status').value=p.status||'';
+  document.getElementById('p-email').value=p.email||'';
+  document.getElementById('p-phone').value=p.phone||'';
+  document.getElementById('p-linkedin').value=p.linkedin||'';
+  document.getElementById('p-github').value=p.github||'';
+
+  const toggle = document.getElementById('avail-toggle');
+  if(p.available) toggle.classList.add('on'); else toggle.classList.remove('on');
+
+  // Stats
+  renderStatsEditor();
+  // Tags
+  renderTags();
+  // About paras
+  renderAboutEditor();
+}
+
+function toggleAvail(){
+  const t=document.getElementById('avail-toggle');
+  t.classList.toggle('on');
+}
+
+// Stats editor
+function renderStatsEditor(){
+  const stats = DATA.profile.stats||[];
+  document.getElementById('stats-editor').innerHTML=stats.map((s,i)=>`
+    <div style="display:grid;grid-template-columns:1fr 2fr auto;gap:.7rem;align-items:center;margin-bottom:.6rem">
+      <input type="text" value="${s.number}" placeholder="6+" onchange="DATA.profile.stats[${i}].number=this.value" style="margin-bottom:0">
+      <input type="text" value="${s.label}" placeholder="Years Experience" onchange="DATA.profile.stats[${i}].label=this.value" style="margin-bottom:0">
+      <button class="btn btn-danger btn-sm" onclick="DATA.profile.stats.splice(${i},1);renderStatsEditor()">✕</button>
+    </div>
+  `).join('');
+}
+function addStat(){DATA.profile.stats.push({number:'0',label:'New Stat'});renderStatsEditor();}
+
+// Tags
+let currentTags = [];
+function renderTags(){
+  currentTags = [...(DATA.profile.tags||[])];
+  const c = document.getElementById('tags-container');
+  const input = document.getElementById('tag-input');
+  c.innerHTML='';
+  currentTags.forEach((t,i)=>{
+    const span=document.createElement('span');span.className='tag-item';
+    span.innerHTML=t+'<button onclick="removeTag('+i+')">✕</button>';
+    c.appendChild(span);
+  });
+  c.appendChild(input);
+}
+function removeTag(i){currentTags.splice(i,1);renderTagsOnly();}
+function renderTagsOnly(){
+  const c=document.getElementById('tags-container'),input=document.getElementById('tag-input');
+  c.innerHTML='';
+  currentTags.forEach((t,i)=>{const span=document.createElement('span');span.className='tag-item';span.innerHTML=t+'<button onclick="removeTag('+i+')">✕</button>';c.appendChild(span);});
+  c.appendChild(input);
+}
+function handleTagInput(e){
+  if(e.key==='Enter'||e.key===','){
+    e.preventDefault();
+    const val=e.target.value.trim().replace(/,/g,'');
+    if(val){currentTags.push(val);e.target.value='';renderTagsOnly();}
+  }
+}
+
+// About editor
+function renderAboutEditor(){
+  const paras = DATA.profile.about||[];
+  document.getElementById('about-editor').innerHTML=paras.map((p,i)=>`
+    <div style="display:flex;gap:.5rem;margin-bottom:.6rem;align-items:flex-start">
+      <textarea style="min-height:70px;margin-bottom:0;flex:1" onchange="DATA.profile.about[${i}]=this.value">${p}</textarea>
+      <button class="btn btn-danger btn-sm" onclick="DATA.profile.about.splice(${i},1);renderAboutEditor()">✕</button>
+    </div>
+  `).join('');
+}
+function addAboutPara(){DATA.profile.about.push('New paragraph...');renderAboutEditor();}
+
+async function saveProfile(){
+  DATA.profile.tags = currentTags;
+  const body = {
+    name:document.getElementById('p-name').value,
+    title:document.getElementById('p-title').value,
+    tagline:document.getElementById('p-tagline').value,
+    location:document.getElementById('p-location').value,
+    status:document.getElementById('p-status').value,
+    email:document.getElementById('p-email').value,
+    phone:document.getElementById('p-phone').value,
+    linkedin:document.getElementById('p-linkedin').value,
+    github:document.getElementById('p-github').value,
+    available:document.getElementById('avail-toggle').classList.contains('on'),
+    stats:DATA.profile.stats,
+    tags:currentTags,
+    about:DATA.profile.about,
+  };
+  await api('PUT','/profile',body);
+  toast('Profile saved!');
+}
+
+// ── Skills ──
+function renderSkillsList(){
+  document.getElementById('skills-list').innerHTML=DATA.skills.map((s,i)=>`
+    <div class="item-row">
+      <span class="item-drag">⠿</span>
+      <span style="font-size:1.4rem">${s.icon}</span>
+      <div class="item-content">
+        <div class="item-title">${s.name}</div>
+        <div class="item-meta">${s.items.replace(/\n/g,' · ')}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openSkillModal(${i})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteSkill(${i})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+function openSkillModal(idx){
+  document.getElementById('skill-edit-index').value=idx!==undefined?idx:'';
+  document.getElementById('skill-modal-title').textContent=idx!==undefined?'Edit Skill':'Add Skill';
+  if(idx!==undefined){
+    const s=DATA.skills[idx];
+    document.getElementById('sk-icon').value=s.icon;
+    document.getElementById('sk-name').value=s.name;
+    document.getElementById('sk-items').value=s.items;
+  } else {
+    document.getElementById('sk-icon').value='';
+    document.getElementById('sk-name').value='';
+    document.getElementById('sk-items').value='';
+  }
+  document.getElementById('skill-modal').classList.add('open');
+}
+async function saveSkill(){
+  const idx=document.getElementById('skill-edit-index').value;
+  const skill={icon:document.getElementById('sk-icon').value,name:document.getElementById('sk-name').value,items:document.getElementById('sk-items').value};
+  if(idx!==''){DATA.skills[parseInt(idx)]=skill;} else {DATA.skills.push(skill);}
+  await api('PUT','/skills',DATA.skills);
+  closeModal('skill-modal');renderSkillsList();toast('Skill saved!');
+}
+async function deleteSkill(i){if(!confirm('Delete this skill?'))return;DATA.skills.splice(i,1);await api('PUT','/skills',DATA.skills);renderSkillsList();toast('Deleted');}
+async function saveSkills(){await api('PUT','/skills',DATA.skills);toast('Order saved!');}
+
+// ── Experience ──
+function renderExpList(){
+  document.getElementById('exp-list').innerHTML=DATA.experience.map(e=>`
+    <div class="item-row">
+      <div class="item-content">
+        <div class="item-title">${e.role} ${e.current?'<span class="badge badge-green">Current</span>':''}</div>
+        <div class="item-meta">${e.company} · ${e.period}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openExpModal('${e.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteExp('${e.id}')">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+function openExpModal(id){
+  document.getElementById('exp-edit-id').value=id||'';
+  document.getElementById('exp-modal-title').textContent=id?'Edit Experience':'Add Experience';
+  const exp=id?DATA.experience.find(e=>e.id===id):null;
+  document.getElementById('exp-role').value=exp?exp.role:'';
+  document.getElementById('exp-badge').value=exp?exp.badge:'';
+  document.getElementById('exp-company').value=exp?exp.company:'';
+  document.getElementById('exp-location').value=exp?exp.location:'';
+  document.getElementById('exp-period').value=exp?exp.period:'';
+  document.getElementById('exp-current').value=exp?String(exp.current):'false';
+  document.getElementById('exp-chips').value=exp?(exp.chips||[]).join(', '):'';
+  renderExpPoints(exp?exp.points:[]);
+  document.getElementById('exp-modal').classList.add('open');
+}
+function renderExpPoints(points){
+  document.getElementById('exp-points-list').innerHTML=points.map((p,i)=>`
+    <div class="point-row">
+      <input type="text" value="${p.replace(/"/g,'&quot;')}" placeholder="Bullet point..." style="margin-bottom:0">
+      <button class="point-remove" onclick="this.parentElement.remove()">✕</button>
+    </div>
+  `).join('');
+}
+function addExpPoint(){
+  const list=document.getElementById('exp-points-list');
+  const div=document.createElement('div');div.className='point-row';
+  div.innerHTML='<input type="text" placeholder="New point..." style="margin-bottom:0"><button class="point-remove" onclick="this.parentElement.remove()">✕</button>';
+  list.appendChild(div);
+}
+async function saveExp(){
+  const id=document.getElementById('exp-edit-id').value;
+  const points=[...document.querySelectorAll('#exp-points-list .point-row input')].map(i=>i.value).filter(v=>v.trim());
+  const exp={
+    role:document.getElementById('exp-role').value,
+    badge:document.getElementById('exp-badge').value,
+    company:document.getElementById('exp-company').value,
+    location:document.getElementById('exp-location').value,
+    period:document.getElementById('exp-period').value,
+    current:document.getElementById('exp-current').value==='true',
+    points,
+    chips:document.getElementById('exp-chips').value.split(',').map(c=>c.trim()).filter(Boolean)
+  };
+  if(id){await api('PUT','/experience/'+id,exp);}
+  else{await api('POST','/experience',exp);}
+  closeModal('exp-modal');
+  const d=await fetch('/api/portfolio').then(r=>r.json());DATA.experience=d.experience;
+  renderExpList();toast('Experience saved!');
+}
+async function deleteExp(id){if(!confirm('Delete this experience?'))return;await api('DELETE','/experience/'+id);DATA.experience=DATA.experience.filter(e=>e.id!==id);renderExpList();toast('Deleted');}
+
+// ── Projects ──
+function renderProjectsList(){
+  document.getElementById('projects-list').innerHTML=DATA.projects.map(p=>`
+    <div class="item-row">
+      <span style="font-size:1.4rem">${p.icon}</span>
+      <div class="item-content">
+        <div class="item-title">${p.name} ${p.link?'<span class="badge badge-blue">Has Link</span>':''}</div>
+        <div class="item-meta">${p.category}</div>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openProjectModal('${p.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteProject('${p.id}')">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+function openProjectModal(id){
+  document.getElementById('proj-edit-id').value=id||'';
+  document.getElementById('project-modal-title').textContent=id?'Edit App':'Add App';
+  const pr=id?DATA.projects.find(p=>p.id===id):null;
+  document.getElementById('proj-icon').value=pr?pr.icon:'📱';
+  document.getElementById('proj-category').value=pr?pr.category:'';
+  document.getElementById('proj-name').value=pr?pr.name:'';
+  document.getElementById('proj-desc').value=pr?pr.desc:'';
+  document.getElementById('proj-link').value=pr?pr.link:'';
+  document.getElementById('proj-tags').value=pr?(pr.tags||[]).join(', '):'';
+  document.getElementById('project-modal').classList.add('open');
+}
+async function saveProject(){
+  const id=document.getElementById('proj-edit-id').value;
+  const pr={
+    icon:document.getElementById('proj-icon').value,
+    category:document.getElementById('proj-category').value,
+    name:document.getElementById('proj-name').value,
+    desc:document.getElementById('proj-desc').value,
+    link:document.getElementById('proj-link').value,
+    tags:document.getElementById('proj-tags').value.split(',').map(t=>t.trim()).filter(Boolean)
+  };
+  if(id){await api('PUT','/projects/'+id,pr);}
+  else{await api('POST','/projects',pr);}
+  closeModal('project-modal');
+  const d=await fetch('/api/portfolio').then(r=>r.json());DATA.projects=d.projects;
+  renderProjectsList();toast('App saved!');
+}
+async function deleteProject(id){if(!confirm('Delete this app?'))return;await api('DELETE','/projects/'+id);DATA.projects=DATA.projects.filter(p=>p.id!==id);renderProjectsList();toast('Deleted');}
+
+// ── Certifications ──
+function renderCertsList(){
+  document.getElementById('certs-list').innerHTML=DATA.certifications.map((c,i)=>`
+    <div class="item-row">
+      <span style="font-size:1.4rem">${c.icon}</span>
+      <div class="item-content"><div class="item-title">${c.title}</div></div>
+      <div class="item-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openCertModal(${i})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCert(${i})">✕</button>
+      </div>
+    </div>
+  `).join('');
+}
+function openCertModal(idx){
+  document.getElementById('cert-edit-index').value=idx!==undefined?idx:'';
+  const c=idx!==undefined?DATA.certifications[idx]:null;
+  document.getElementById('cert-icon').value=c?c.icon:'🎓';
+  document.getElementById('cert-title').value=c?c.title:'';
+  document.getElementById('cert-modal').classList.add('open');
+}
+async function saveCert(){
+  const idx=document.getElementById('cert-edit-index').value;
+  const cert={icon:document.getElementById('cert-icon').value,title:document.getElementById('cert-title').value};
+  if(idx!==''){DATA.certifications[parseInt(idx)]=cert;} else {DATA.certifications.push(cert);}
+  await api('PUT','/certifications',DATA.certifications);
+  closeModal('cert-modal');renderCertsList();toast('Saved!');
+}
+async function deleteCert(i){if(!confirm('Delete?'))return;DATA.certifications.splice(i,1);await api('PUT','/certifications',DATA.certifications);renderCertsList();toast('Deleted');}
+
+// ── Settings ──
+async function changePassword(){
+  const np=document.getElementById('new-pass').value,cp=document.getElementById('confirm-pass').value;
+  if(np!==cp){toast('Passwords do not match','error');return;}
+  if(np.length<6){toast('Min 6 characters','error');return;}
+  await api('POST','/change-password',{newPassword:np});
+  toast('Password changed!');
+  document.getElementById('new-pass').value='';
+  document.getElementById('confirm-pass').value='';
+}
+
+// ── Modals ──
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-overlay').forEach(m=>{m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')});});
+
+// ── Init ──
+if(TOKEN){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').classList.add('active');
+  loadAll();
+}
+</script>
+</body>
+</html>
